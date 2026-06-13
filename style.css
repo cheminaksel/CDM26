@@ -1,0 +1,305 @@
+/* Police officielle Coupe du Monde 2026 (FWC2026, Pangram Pangram) */
+@font-face {
+  font-family: "FWC2026";
+  src: url("../fonts/FWC2026-UltraCondensedMedium.ttf") format("truetype");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "FWC2026", "Arial Narrow", system-ui, sans-serif;
+  /* Identité visuelle CDM 2026 — version MULTICOLORE vibrante */
+  --bg: #241a4a;                       /* repli (violet profond) */
+  --card: rgba(17, 14, 34, 0.78);      /* surfaces translucides sur le fond coloré */
+  --card2: rgba(33, 27, 58, 0.82);
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #ffffff;
+  --muted: #cfc9ec;
+  --green: #3fa64a;       /* vert du terrain / Mexique */
+  --accent: #ff3d7f;      /* rose vif — couleur principale */
+  --accent2: #2f6bff;     /* bleu vif (USA) */
+  --live: #ff2e3f;        /* rouge (Canada) */
+  --gold: #ffd23f;        /* jaune brand */
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #5a23a8 0%, #1f3fb0 26%, #0f8a90 52%, #3aa64e 74%, #9cc23f 100%);
+  background-attachment: fixed;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+.container { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Header ---------- */
+.site-header {
+  background: rgba(13, 10, 28, 0.55);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 20;
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; }
+.brand-ball { font-size: 26px; }
+.brand-logo { height: 42px; width: auto; display: block; }
+.brand strong { color: var(--accent); }
+.brand-sub { color: var(--muted); font-size: 13px; }
+.back-link { color: var(--muted); font-size: 14px; }
+.back-link:hover { color: var(--text); }
+.main-nav { display: flex; gap: 6px; }
+.nav-link { padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.nav-link:hover { color: var(--text); }
+.nav-link.active { background: var(--accent2); color: #fff; }
+
+/* ---------- Page Équipes ---------- */
+.page-title { font-size: 24px; margin: 24px 0 16px; }
+.team-group { margin-bottom: 26px; }
+.group-title { font-size: 15px; color: var(--accent); margin-bottom: 12px; border-left: 3px solid var(--accent); padding-left: 10px; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.team-tile { display: flex; align-items: center; gap: 12px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; transition: transform .12s, border-color .12s; }
+.team-tile:hover { transform: translateY(-2px); border-color: var(--accent2); }
+.team-tile-flag { width: 40px; height: 27px; }
+.team-tile-name { font-size: 14px; font-weight: 600; }
+
+/* ---------- Page Composition (terrain) ---------- */
+.team-head { display: flex; align-items: center; gap: 16px; margin: 24px 0 16px;
+  padding: 8px 0 8px 14px; }
+.team-head-flag { width: 64px; height: 43px; }
+.team-head-name { font-size: 26px; }
+.team-head-sub { color: var(--muted); font-size: 14px; }
+
+.key-card, .sample-banner { background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; }
+.sample-banner { background: #2a2410; border-color: #5a4a16; color: var(--gold); }
+.key-card code, .sample-banner code { background: var(--card2); padding: 2px 6px; border-radius: 6px; color: var(--accent); }
+
+.pitch-wrap { margin-bottom: 50px; }
+.pitch {
+  position: relative; border-radius: 16px; padding: 28px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  background: repeating-linear-gradient(180deg, #1f9d54 0, #1f9d54 56px, #1c9550 56px, #1c9550 112px);
+  border: 2px solid rgba(255,255,255,.55); overflow: hidden;
+}
+/* ligne médiane + rond central */
+.pitch::after { content:""; position:absolute; top:50%; left:0; right:0; height:2px; background:rgba(255,255,255,.45); }
+.pitch::before { content:""; position:absolute; top:50%; left:50%; width:130px; height:130px;
+  transform:translate(-50%,-50%); border:2px solid rgba(255,255,255,.45); border-radius:50%; }
+/* Terrain en formation : joueurs positionnés en absolu */
+.pitch.formation { max-width: 540px; margin: 0 auto; aspect-ratio: 68 / 100; padding: 0; }
+.player.on-pitch { position: absolute; transform: translate(-50%, -50%); z-index: 2; width: 84px; }
+
+/* Banc des remplaçants */
+.bench { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 12px; }
+.bench .player .player-avatar { background: var(--card2); }
+.bench .player .player-photo.is-icon { background: var(--card2); }
+.bench .player .player-name { color: var(--text); text-shadow: none; }
+
+.player { width: 84px; text-align: center; }
+.player-avatar { position: relative; width: 56px; height: 56px; margin: 0 auto;
+  border-radius: 50%; background: var(--green); border: 2px solid #fff; overflow: hidden; }
+.player-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.player-photo.is-icon { padding: 11px; background: var(--green); }
+.player-num { position: absolute; bottom: -2px; right: -2px; min-width: 18px; height: 18px;
+  padding: 0 4px; border-radius: 9px; background: #04210f; color: #fff; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; border: 1px solid #fff; }
+.player-name { margin-top: 6px; font-size: 12px; font-weight: 700; color: #fff;
+  text-transform: uppercase; line-height: 1.15; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+
+@media (max-width: 600px) {
+  .player { width: 70px; } .player-avatar { width: 46px; height: 46px; }
+  .player-name { font-size: 11px; }
+}
+
+/* ---------- Effet verre dépoli sur les surfaces (fond coloré visible) ---------- */
+.hero-card, .match-card, .match-detail, .team-tile, .bench, .tl-item,
+.key-card, .sample-banner, .hero-skeleton, .hero-empty, .tl-empty {
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+
+/* ---------- Police officielle CDM 2026 sur les éléments d'affichage ---------- */
+.brand, .brand-text, .main-nav, .nav-link, .back-link,
+.page-title, .group-title, .section-title,
+.hero-tag, .hero-stage, .hero-tname, .hero-score, .hero-time, .hero-btn,
+.badge, .filter,
+.team-name, .score, .vs, .mc-stage,
+.md-status, .md-name, .md-goals, .md-vs,
+.tl-min, .tl-text,
+.goal-text, .goal-detail,
+.team-tile-name, .team-head-name, .team-head-sub,
+.player-name, .player-num, .flag-fallback {
+  font-family: var(--font-display);
+}
+/* Cette police est ultra-condensée : on élargit un peu le suivi des lettres
+   pour les grands titres, et on garde des tailles lisibles. */
+.brand-text, .page-title, .hero-tname, .hero-score, .md-name, .md-goals,
+.goal-text, .team-head-name { letter-spacing: 0.5px; }
+.hero-score, .md-goals, .goal-text { letter-spacing: 2px; }
+/* Légère hausse de taille car l'ultra-condensé occupe moins de largeur */
+.team-name { font-size: 15px; }
+.nav-link, .filter { font-size: 15px; letter-spacing: .3px; }
+
+/* ---------- Hero ---------- */
+.hero { margin: 24px 0; }
+.hero-skeleton, .hero-empty { padding: 40px; text-align: center; color: var(--muted);
+  background: var(--card); border-radius: var(--radius); }
+.hero-card {
+  background: linear-gradient(135deg, var(--card2), var(--card));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; cursor: pointer; transition: transform .15s, box-shadow .15s;
+}
+.hero-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.hero-card.is-live { border-color: var(--live); box-shadow: 0 0 0 1px var(--live), 0 10px 40px rgba(255,59,84,.15); }
+.hero-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
+.hero-tag { font-size: 13px; font-weight: 600; color: var(--muted); }
+.hero-tag.live { color: #fff; background: var(--live); padding: 4px 12px; border-radius: 999px;
+  animation: pulse 1.6s infinite; }
+.hero-stage { font-size: 13px; color: var(--muted); }
+.hero-match { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+.hero-team { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.hero-flag { width: 76px; height: 51px; }
+.hero-tname { font-size: 20px; font-weight: 600; text-align: center; }
+.hero-score { font-size: 44px; font-weight: 800; letter-spacing: 2px; }
+.hero-time { font-size: 30px; font-weight: 700; color: var(--gold); }
+.hero-btn {
+  margin-top: 20px; width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: var(--accent); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer;
+}
+.hero-card.is-live .hero-btn { background: var(--live); color: #fff; }
+
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+
+/* ---------- Filtres ---------- */
+.filters { display: flex; gap: 8px; margin: 8px 0 18px; flex-wrap: wrap; }
+.filter {
+  background: var(--card); border: 1px solid var(--line); color: var(--muted);
+  padding: 8px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600;
+}
+.filter:hover { color: var(--text); }
+.filter.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+
+/* ---------- Liste des matchs ---------- */
+.match-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; padding-bottom: 40px; }
+.loading { grid-column: 1/-1; padding: 30px; text-align: center; color: var(--muted); }
+.match-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 16px; display: block; transition: transform .12s, border-color .12s;
+}
+.match-card:hover { transform: translateY(-2px); border-color: var(--accent2); }
+.match-card.live { border-color: var(--live); }
+.mc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.mc-stage { font-size: 12px; color: var(--muted); }
+.badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.badge.live { background: var(--live); color: #fff; animation: pulse 1.6s infinite; }
+.badge.finished { background: #2a3a5e; color: var(--muted); }
+.badge.upcoming { background: #2a2410; color: var(--gold); }
+.mc-body { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; }
+.team { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.flag { width: 46px; height: 31px; }
+.team-name { font-size: 14px; font-weight: 600; text-align: center; }
+.score { font-size: 26px; font-weight: 800; }
+.score span { color: var(--muted); }
+.vs { color: var(--muted); font-weight: 700; }
+.mc-foot { margin-top: 12px; font-size: 12px; color: var(--muted); text-align: center; }
+
+/* ---------- Page Match ---------- */
+.match-detail {
+  background: linear-gradient(135deg, var(--card2), var(--card));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 28px; margin: 24px 0; text-align: center;
+}
+.md-status { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.md-status.live { color: #fff; background: var(--live); display: inline-block; padding: 4px 14px;
+  border-radius: 999px; animation: pulse 1.6s infinite; }
+.md-meta { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+.md-score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
+.md-team { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.md-flag { width: 92px; height: 61px; }
+
+/* Drapeaux (images SVG flagcdn) — aspect uniforme + petit cadre */
+.flag-img { object-fit: cover; border-radius: 4px; border: 1px solid var(--line);
+  box-shadow: 0 2px 6px rgba(0,0,0,.35); background: var(--card); }
+/* Repli quand le drapeau est inconnu (équipe à déterminer) ou image en échec */
+.flag-fallback { display: inline-flex; align-items: center; justify-content: center;
+  background: var(--card2); border: 1px solid var(--line); border-radius: 4px;
+  color: var(--muted); font-weight: 700; font-size: 12px; }
+.hero-flag.flag-fallback { font-size: 18px; }
+.md-flag.flag-fallback { font-size: 20px; }
+.md-name { font-size: 20px; font-weight: 700; }
+.md-numbers { display: flex; align-items: center; gap: 14px; }
+.md-goals { font-size: 52px; font-weight: 800; }
+.md-sep { font-size: 36px; color: var(--muted); }
+.md-vs { font-size: 30px; color: var(--gold); font-weight: 700; }
+
+/* ---------- Bloc "Regarder le direct" (matchs en cours) ---------- */
+.watch-live { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.watch-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.watch-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.watch-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; font-weight: 700; font-size: 15px;
+  padding: 11px 18px; border-radius: 999px; transition: transform .12s, filter .12s;
+}
+.watch-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.watch-btn:nth-child(2) { background: var(--accent2); }
+.watch-btn:nth-child(3) { background: var(--green); }
+.watch-note { font-size: 11px; font-weight: 600; opacity: .85; }
+.watch-hint { margin-top: 12px; font-size: 12px; color: var(--muted); }
+
+/* ---------- Timeline ---------- */
+.timeline-wrap { padding-bottom: 60px; }
+.section-title { font-size: 16px; color: var(--muted); margin-bottom: 14px; }
+.timeline { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.tl-empty { color: var(--muted); padding: 16px; background: var(--card); border-radius: 12px; text-align: center; }
+.tl-item {
+  display: flex; align-items: center; gap: 12px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+}
+.tl-item.right { flex-direction: row-reverse; text-align: right; }
+.tl-min { font-weight: 800; color: var(--accent); min-width: 34px; }
+.tl-icon { font-size: 20px; }
+.tl-flag { width: 26px; height: 18px; }
+.tl-flag.flag-fallback { font-size: 10px; }
+.tl-text { flex: 1; }
+
+/* ---------- Alerte BUT ---------- */
+.goal-alert {
+  position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.65); opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.goal-alert.show { opacity: 1; }
+.goal-alert-inner {
+  text-align: center; transform: scale(.6); transition: transform .35s cubic-bezier(.2,1.4,.4,1);
+}
+.goal-alert.show .goal-alert-inner { transform: scale(1); }
+.goal-emoji { font-size: 90px; animation: bounce .6s infinite alternate; }
+.goal-text {
+  font-size: 72px; font-weight: 900; color: var(--gold);
+  text-shadow: 0 0 30px rgba(245,197,66,.7); letter-spacing: 3px;
+}
+.goal-detail { font-size: 22px; color: #fff; margin-top: 8px; }
+@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-18px); } }
+
+/* ---------- Bouton son ---------- */
+.sound-toggle {
+  position: fixed; bottom: 20px; right: 20px; z-index: 50;
+  background: var(--card2); border: 1px solid var(--line); color: var(--text);
+  padding: 12px 18px; border-radius: 999px; cursor: pointer; font-size: 14px; font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0,0,0,.4);
+}
+.sound-toggle.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ---------- Footer ---------- */
+.site-footer { border-top: 1px solid var(--line); padding: 20px 0; margin-top: 20px; }
+.site-footer p { color: var(--muted); font-size: 13px; text-align: center; }
+.site-footer code { background: var(--card); padding: 2px 6px; border-radius: 6px; color: var(--accent); }
+
+@media (max-width: 600px) {
+  .hero-flag { width: 60px; height: 40px; } .hero-tname { font-size: 16px; } .hero-score { font-size: 34px; }
+  .md-flag { width: 72px; height: 48px; } .md-goals { font-size: 40px; } .goal-text { font-size: 52px; }
+}

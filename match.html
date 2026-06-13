@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match en direct — Coupe du Monde 2026</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="img/logo-blanc.svg" class="brand-logo" alt="FIFA World Cup 2026" />
+        <span class="brand-text">Coupe du Monde <strong>2026</strong></span>
+      </a>
+      <a href="index.html" class="back-link">← Tous les matchs</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="match-detail" class="match-detail">
+      <div class="loading">Chargement du match…</div>
+    </section>
+
+    <section class="timeline-wrap">
+      <h2 class="section-title">Fil du match</h2>
+      <ul id="timeline" class="timeline"></ul>
+    </section>
+  </main>
+
+  <!-- Alerte "but" : supporters qui crient -->
+  <div id="goal-alert" class="goal-alert" aria-hidden="true">
+    <div class="goal-alert-inner">
+      <div class="goal-emoji">⚽🎉</div>
+      <div class="goal-text">BUUUUT&nbsp;!</div>
+      <div class="goal-detail" id="goal-detail"></div>
+    </div>
+  </div>
+
+  <!-- Bouton pour activer le son (les navigateurs bloquent le son auto) -->
+  <button id="sound-toggle" class="sound-toggle" title="Activer le son des supporters">🔇 Activer le son</button>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Données : <a href="https://github.com/openfootball/worldcup.json" target="_blank" rel="noopener">openfootball</a>. Active le son pour entendre les supporters à chaque but.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/crowd.js"></script>
+  <script src="js/match.js"></script>
+</body>
+</html>

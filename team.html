@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Composition — Coupe du Monde 2026</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="img/logo-blanc.svg" class="brand-logo" alt="FIFA World Cup 2026" />
+        <span class="brand-text">Coupe du Monde <strong>2026</strong></span>
+      </a>
+      <a href="teams.html" class="back-link">← Toutes les équipes</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="team-head" class="team-head"></div>
+    <div id="notice"></div>
+    <section id="pitch-wrap" class="pitch-wrap"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p id="foot-note">Effectifs via API-Football.</p>
+    </div>
+  </footer>
+
+  <script src="js/squads.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/team.js"></script>
+</body>
+</html>

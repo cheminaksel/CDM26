@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coupe du Monde 2026 — Tous les matchs en direct</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="img/logo-blanc.svg" class="brand-logo" alt="FIFA World Cup 2026" />
+        <span class="brand-text">Coupe du Monde <strong>2026</strong></span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link active">Matchs</a>
+        <a href="teams.html" class="nav-link">Équipes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Bandeau du match en direct / à venir -->
+    <section id="hero" class="hero">
+      <div class="hero-skeleton">Chargement…</div>
+    </section>
+
+    <!-- Filtres -->
+    <nav class="filters" id="filters">
+      <button class="filter active" data-filter="all">Tous</button>
+      <button class="filter" data-filter="LIVE">🔴 En direct</button>
+      <button class="filter" data-filter="UPCOMING">À venir</button>
+      <button class="filter" data-filter="FINISHED">Terminés</button>
+    </nav>
+
+    <!-- Liste des matchs -->
+    <section id="match-list" class="match-list">
+      <div class="loading">Chargement des matchs…</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Calendrier réel : <a href="https://github.com/openfootball/worldcup.json" target="_blank" rel="noopener">openfootball</a> (gratuit). Live à la minute en option via API-Football — voir <code>js/data.js</code>.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
