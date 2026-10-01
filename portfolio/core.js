@@ -154,14 +154,16 @@ const avatarHTML = () => CONFIG.avatar ? `<img src="${esc(CONFIG.avatar)}" alt="
 const TYPE = {
   video:  { label: 'Vidéo', ext: 'mov', glyph: 'film', app: 'resolve', color: '#ff9f0a' },
   motion: { label: 'Motion design', ext: 'aep', glyph: 'sparkle', app: 'ae', color: '#bf5af2' },
-  photo:  { label: 'Photo', ext: 'psd', glyph: 'camera', app: 'ps', color: '#30d158' },
+  photo:  { label: 'Photo', ext: 'jpg', glyph: 'camera', app: 'lr', color: '#30d158' },
   design: { label: 'Graphisme', ext: 'png', glyph: 'palette', app: 'canva', color: '#0a84ff' }
 };
 const CAT = { pro: 'Professionnel', scolaire: 'Scolaire', reel: 'Showreel' };
 const FMT = { affiche: 'Affiche', miniature: 'Miniature', post: 'Post', story: 'Story' };
 const slug = s => norm(s).replace(/[«»"']/g, '').replace(/—/g, '-').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
-const fileName = p => p.file || `${ucfirst(slug(p.short || p.title))}.${TYPE[p.type].ext}`;
-const appFor = p => p.app || TYPE[p.type].app;
+// logiciel qui ouvre le projet : affiches → Photoshop, autres graphismes → Canva
+const appFor = p => p.app || (p.type === 'design' && (p.format || 'affiche') === 'affiche' ? 'ps' : TYPE[p.type].app);
+const extFor = p => p.type === 'design' && appFor(p) === 'ps' ? 'psd' : TYPE[p.type].ext;
+const fileName = p => p.file || `${ucfirst(slug(p.short || p.title))}.${extFor(p)}`;
 const REEL = Object.assign({ id: 'showreel', short: 'Showreel', category: 'reel', type: 'video', client: CONFIG.name, year: '2026', role: 'Réalisation, montage, étalonnage', description: "Une sélection de mes meilleurs plans : clips, aftermovies, films de marque et projets personnels.", tags: ['Showreel'], tools: ['DaVinci Resolve', 'After Effects'], file: 'Showreel.mov', timeline: '' }, CONFIG.showreel);
 const byId = id => id === 'showreel' ? REEL : CONFIG.projects.find(p => p.id === id);
 const coverOf = p => p.cover || asList(p.gallery)[0] || '';
@@ -575,6 +577,8 @@ const APPS = {
               status: ['Chargement des préférences…', 'Initialisation du moteur GPU…', 'Chargement des plug-ins…', 'Ouverture du projet…'] },
   ae:       { name: 'After Effects', icon: 'ae', splash: 'adobe', open: from => openAE(null, from),
               status: ['Initialisation des plug-ins…', 'Chargement des effets…', 'Ouverture des compositions…'] },
+  lr:       { name: 'Lightroom Classic', icon: 'lrc', splash: 'adobe', open: from => openLR(null, from),
+              status: ['Ouverture du catalogue…', 'Chargement des aperçus…', 'Préparation du module Développement…'] },
   ps:       { name: 'Photoshop', icon: 'ps', splash: 'adobe', open: from => openPS(null, from),
               status: ['Lecture des préférences…', 'Chargement des pinceaux…', 'Ouverture des documents…'] },
   canva:    { name: 'Canva', icon: 'canva', splash: 'canva', open: from => openCanva(null, from),
@@ -584,7 +588,7 @@ const APPS = {
   contacts: { name: 'Contacts', icon: 'contacts', open: from => openContact(from) },
   trash:    { name: 'Corbeille', icon: 'trash', open: from => openTrash(from) }
 };
-const DOCK = ['finder', 'keynote', '|', 'resolve', 'ae', 'ps', 'canva', '|', 'notes', 'mail', 'contacts', '|', 'trash'];
+const DOCK = ['finder', 'keynote', '|', 'resolve', 'ae', 'lr', 'ps', 'canva', '|', 'notes', 'mail', 'contacts', '|', 'trash'];
 
 function dockItem(app) { return $(`.dock-item[data-app="${app}"]`); }
 function dockRect(app) {
@@ -601,7 +605,7 @@ function splash(appId) {
   const app = APPS[appId];
   return new Promise(res => {
     const year = new Date().getFullYear();
-    const names = { resolve: 'DaVinci Resolve 19', ae: `Adobe After Effects ${year}`, ps: `Adobe Photoshop ${year}`, canva: 'Canva' };
+    const names = { resolve: 'DaVinci Resolve 19', ae: `Adobe After Effects ${year}`, ps: `Adobe Photoshop ${year}`, lr: 'Adobe Lightroom Classic', canva: 'Canva' };
     const el = h(`<div class="splash sp-${app.splash} sp-${appId}"><div class="sp-art"></div><div class="sp-logo">${icon(app.icon)}</div>
       <div class="sp-name">${esc(names[appId] || app.name)}</div><div class="sp-status">Démarrage…</div><div class="sp-bar"><i></i></div>
       <div class="sp-legal">${app.splash === 'adobe' ? '© 1990-' + year + ' Adobe. Tous droits réservés.' : app.splash === 'resolve' ? 'Blackmagic Design' : ''}</div></div>`);
@@ -886,7 +890,7 @@ function spotItems() {
     ...CONFIG.projects.map(p => ({ label: p.title, sub: `${TYPE[p.type].label} · ${CAT[p.category]} · ${p.year}`, app: appFor(p), key: `${p.title} ${p.client} ${(p.tags || []).join(' ')} ${p.type} ${p.category}`, run: () => openProject(p) })),
     { label: 'Showreel', sub: 'Vidéo', ic: 'film', key: 'showreel bande demo', run: () => openShowreel() },
     ...(CONFIG.storyboards || []).map(s => ({ label: s.title, sub: 'Storyboard · Notes', app: 'notes', key: `storyboard ${s.title}`, run: () => openNotes('sb:' + s.id) })),
-    ...['resolve', 'ae', 'ps', 'canva', 'notes', 'mail'].map(a => ({ label: APPS[a].name, sub: 'Application', app: a, key: APPS[a].name, run: () => launch(a) })),
+    ...['resolve', 'ae', 'lr', 'ps', 'canva', 'notes', 'mail'].map(a => ({ label: APPS[a].name, sub: 'Application', app: a, key: APPS[a].name, run: () => launch(a) })),
     ...Object.entries(FOLDERS).map(([k, f]) => ({ label: f.label, sub: 'Dossier', ic: f.icon, key: f.label + ' dossier', run: () => openFolder(k) })),
     { label: 'CV', sub: 'Document PDF', ic: 'doc', key: 'cv curriculum', run: () => openCV() },
     { label: 'À propos de ce portfolio', sub: 'Infos', ic: 'info', key: 'a propos portfolio', run: () => openAbout() }

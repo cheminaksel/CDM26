@@ -16,7 +16,7 @@ PORTFOLIO macOS — mode d'emploi
    logos.js     vrais logos des logiciels et icônes d'apps
    core.js      bureau, fenêtres, Dock, menus, widgets
    apps.js      les applications (Finder, DaVinci Resolve, After Effects,
-                Photoshop, Canva, Mail, Contacts, Notes, Keynote)
+                Lightroom Classic, Photoshop, Canva, Mail, Contacts, Notes, Keynote)
    style.css / apps.css   l'apparence
    assets/      tes vidéos, captures de timeline, photos, storyboards, avatar, CV
 
@@ -46,13 +46,18 @@ PORTFOLIO macOS — mode d'emploi
        et coupe la capture pour qu'elle commence et finisse comme la vidéo.
    Le logiciel qui ouvre le projet : app: 'resolve' ou 'ae'
    (par défaut : vidéo → DaVinci Resolve, motion → After Effects).
+   Pour les autres projets : app: 'lr' (Lightroom), 'ps' (Photoshop) ou 'canva'.
    Sans vidéo ni capture, un aperçu et une timeline réalistes sont générés.
 
-5. PHOTOSHOP ET CANVA
-   - Photos (type 'photo') : gallery: ['assets/photos/serie-01.jpg', …]
+5. LIGHTROOM, PHOTOSHOP ET CANVA
+   - Photos (type 'photo') → Lightroom Classic (module Développement) :
+       gallery: ['assets/photos/serie-01.jpg', …]   (une photo = une vignette de la pellicule)
      Option avant/après : before: ['assets/photos/serie-01-avant.jpg', …]
-     → dans Photoshop, masque le calque « Retouche » (œil) pour voir l'avant.
-   - Graphisme (type 'design') : cover ou gallery (chaque image = une page Canva).
+     → bouton Y|Y (ou touche Y) pour comparer avant / après.
+     Les curseurs (exposition, contraste, balance des blancs…) et les paramètres
+     prédéfinis fonctionnent pour de vrai sur l'image.
+   - Affiches (type 'design', format 'affiche') → Photoshop : cover ou gallery.
+   - Miniatures, posts, stories (type 'design') → Canva : chaque image = une page.
 
 6. STORYBOARDS (app Notes)
    Dans config.js → storyboards :
