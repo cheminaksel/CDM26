@@ -160,7 +160,7 @@ button.mb-item:hover, .mb-item.open { background: rgba(255,255,255,.2); }
 .select-rect { position: absolute; z-index: 11; display: none; border: 1px solid rgba(255,255,255,.6); background: rgba(255,255,255,.12); border-radius: 3px; pointer-events: none; }
 
 /* ---------- Widgets ---------- */
-.widgets { position: absolute; z-index: 9; left: 22px; top: calc(var(--mb) + 18px); width: 344px; display: grid; grid-template-columns: 164px 164px; grid-auto-rows: 164px; gap: 16px; }
+.widgets { position: absolute; z-index: 12; left: 22px; top: calc(var(--mb) + 18px); width: 344px; display: grid; grid-template-columns: 164px 164px; grid-auto-rows: 164px; gap: 16px; }
 .wg { position: relative; overflow: hidden; border-radius: 22px; color: #fff; text-align: left; background: rgba(22,22,30,.5); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 10px 30px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.12); contain: layout paint; }
 html[data-theme="light"] .wg:not(.wg-reel):not(.wg-photos):not(.wg-notes) { background: rgba(255,255,255,.72); color: #1d1d1f; border-color: rgba(255,255,255,.7); }
 button.wg { cursor: pointer; transition: transform .25s var(--spring); }
@@ -241,7 +241,7 @@ html[data-theme="dark"] .wg-notes { background: #1c1c1e; color: #f5f5f7; border-
 .wn-f { padding: 6px 12px 10px; font-size: 10.5px; font-weight: 600; opacity: .5; }
 
 /* pense-bête (Stickies) */
-.sticky { position: absolute; z-index: 9; left: 392px; top: calc(var(--mb) + 26px); width: 214px; padding: 0 16px 14px; background: linear-gradient(180deg, #fff7a8, #fdec6f); color: #3b3104; font-family: "Marker Felt", "Comic Sans MS", "Segoe Print", var(--font); font-size: 14.5px; line-height: 1.35; box-shadow: 0 14px 30px rgba(0,0,0,.28); transform: rotate(-1.5deg); border-radius: 2px; }
+.sticky { position: absolute; z-index: 12; left: 392px; top: calc(var(--mb) + 26px); width: 214px; padding: 0 16px 14px; background: linear-gradient(180deg, #fff7a8, #fdec6f); color: #3b3104; font-family: "Marker Felt", "Comic Sans MS", "Segoe Print", var(--font); font-size: 14.5px; line-height: 1.35; box-shadow: 0 14px 30px rgba(0,0,0,.28); transform: rotate(-1.5deg); border-radius: 2px; }
 .sticky p + p { margin-top: 7px; }
 .sticky a { text-decoration: underline; color: #0b5bd3; }
 .st-bar { height: 20px; margin: 0 -16px 8px; background: rgba(0,0,0,.06); display: flex; align-items: center; padding: 0 6px; cursor: grab; touch-action: none; }
