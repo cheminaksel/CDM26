@@ -1,0 +1,82 @@
+PORTFOLIO macOS — mode d'emploi
+================================
+
+1. OUVRIR LE SITE
+   - Double-clique sur index.html (tous les fichiers du dossier doivent rester ensemble).
+   - Liens directs utiles à partager :
+       index.html#presentation   → ouvre directement ta présentation
+       index.html#contact        → ouvre directement la page Contact
+       index.html#projets        → ouvre le Finder avec tous les projets
+       index.html#storyboards    → ouvre tes storyboards dans Notes
+       index.html#bureau         → saute le démarrage
+
+2. LES FICHIERS
+   index.html   la page
+   config.js    ← TOUT TON CONTENU EST ICI (c'est le seul fichier à modifier)
+   logos.js     vrais logos des logiciels et icônes d'apps
+   core.js      bureau, fenêtres, Dock, menus, widgets
+   apps.js      les applications (Finder, DaVinci Resolve, After Effects,
+                Photoshop, Canva, Mail, Contacts, Notes, Keynote)
+   style.css / apps.css   l'apparence
+   assets/      tes vidéos, captures de timeline, photos, storyboards, avatar, CV
+
+3. CE QU'IL Y A EN HAUT DE L'ÉCRAN
+   - « Présentation » : une présentation Keynote de toi, générée à partir de
+     config.js (bio, ce que tu fais, logiciels avec leurs vrais logos, compétences,
+     parcours, projets phares, storyboards, contact). Bouton « Lire » = plein écran.
+     Les textes d'accroche se modifient dans le bloc « presentation » de config.js.
+   - « Contact » : ta fiche contact + un formulaire pour t'écrire.
+     Le même formulaire est dans l'app Mail (bouton « Écrire à … », « Répondre »
+     ou l'icône Nouveau message).
+
+4. MONTRER UNE VIDÉO DANS DAVINCI RESOLVE / AFTER EFFECTS
+   Pour chaque projet vidéo (config.js → projects) :
+     video:    'assets/videos/clip.mp4'        → s'affiche dans le Viewer
+     timeline: 'assets/timelines/clip.png'     → ta vraie timeline, en dessous
+   La capture de timeline peut être :
+     - une IMAGE (capture d'écran : Cmd+Maj+4 sur Mac, Win+Maj+S sur Windows).
+       Une tête de lecture rouge avance dessus pendant la lecture. Pour qu'elle
+       soit pile au bon endroit, indique où commence et finit ton montage sur
+       l'image (de 0 = bord gauche à 1 = bord droit) :
+           timelineRange: [0.12, 0.96]
+     - une VIDÉO (enregistrement d'écran de la timeline pendant la lecture :
+       Cmd+Maj+5 sur Mac, Win+Alt+R sur Windows). Elle est lue en même temps que
+       la vidéo du Viewer : lecture, pause, avance… tout est synchronisé.
+       Astuce : lance l'enregistrement, puis la lecture depuis le début du montage,
+       et coupe la capture pour qu'elle commence et finisse comme la vidéo.
+   Le logiciel qui ouvre le projet : app: 'resolve' ou 'ae'
+   (par défaut : vidéo → DaVinci Resolve, motion → After Effects).
+   Sans vidéo ni capture, un aperçu et une timeline réalistes sont générés.
+
+5. PHOTOSHOP ET CANVA
+   - Photos (type 'photo') : gallery: ['assets/photos/serie-01.jpg', …]
+     Option avant/après : before: ['assets/photos/serie-01-avant.jpg', …]
+     → dans Photoshop, masque le calque « Retouche » (œil) pour voir l'avant.
+   - Graphisme (type 'design') : cover ou gallery (chaque image = une page Canva).
+
+6. STORYBOARDS (app Notes)
+   Dans config.js → storyboards :
+     frames : une case par plan (image, plan, cadrage, mouvement, durée, texte)
+     pages  : planches entières scannées (affichées en grand)
+   Sans image, une esquisse au crayon est générée pour chaque case.
+
+7. RECEVOIR LES MESSAGES DIRECTEMENT
+   Par défaut, le formulaire ouvre la messagerie du visiteur avec le message prêt.
+   Pour recevoir les messages directement dans ta boîte mail sans qu'il ait à
+   l'envoyer lui-même : crée un formulaire gratuit sur https://formspree.io
+   et colle son adresse dans config.js → formEndpoint.
+
+8. GARDER LE SITE RAPIDE
+   - Vidéos : MP4 (H.264), 1080p max, compressées (HandBrake, préréglage
+     « Fast 1080p30 »). Une capture de timeline vidéo peut être en 720p.
+   - Images : JPG/WebP de 2000 px de large max.
+   - Le site n'utilise plus de flou ni d'animations lourdes derrière les
+     fenêtres : il reste fluide même sur un ordinateur modeste.
+
+9. METTRE EN LIGNE (gratuit)
+   GitHub Pages, Netlify ou Vercel : dépose simplement le dossier « portfolio ».
+   Netlify Drop (app.netlify.com/drop) : glisse le dossier dans la page.
+
+Note : les vidéos YouTube/Vimeo ne s'affichent qu'avec Internet. Avec un lien
+YouTube/Vimeo, la vidéo se lit dans le Viewer mais la synchronisation avec la
+capture de timeline n'est possible qu'avec un fichier vidéo (assets/videos/…).

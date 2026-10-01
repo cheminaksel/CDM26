@@ -1,0 +1,2 @@
+Cases (frames → image) ou planches entières (pages) de tes storyboards.
+Ex. : clip-01.jpg, clip-planche1.jpg

@@ -1,0 +1,2 @@
+Captures de tes vraies timelines (image .png/.jpg ou enregistrement d’écran .mp4).
+Ex. : clip.png → timeline: 'assets/timelines/clip.png'  (+ timelineRange: [début, fin] pour une image)

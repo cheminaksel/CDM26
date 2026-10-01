@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Portfolio — Vidéaste &amp; photographe</title>
+  <meta name="description" content="Portfolio vidéo et photo : clips, aftermovies, films de marque, motion design, storyboards et photographie.">
+  <meta name="theme-color" content="#0b1026">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="apps.css">
+</head>
+<body>
+
+  <!-- ============ DÉMARRAGE ============ -->
+  <div id="boot" class="boot" aria-hidden="true">
+    <div class="boot-logo" id="bootLogo"></div>
+    <div class="boot-bar"><span id="bootFill"></span></div>
+    <div class="boot-skip">Cliquer pour passer</div>
+  </div>
+
+  <!-- ============ ÉCRAN VERROUILLÉ ============ -->
+  <div id="lock" class="lock">
+    <div class="lock-top">
+      <div class="lock-date" id="lockDate"></div>
+      <div class="lock-time" id="lockTime"></div>
+    </div>
+    <div class="lock-user">
+      <div class="avatar" id="lockAvatar"></div>
+      <div class="lock-name" id="lockName"></div>
+      <button class="lock-input" id="lockBtn" aria-label="Ouvrir la session">
+        <span class="lock-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="lock-go"></span>
+      </button>
+      <p class="lock-hint">Cliquez ou appuyez sur Entrée pour ouvrir la session</p>
+    </div>
+  </div>
+
+  <!-- ============ BUREAU ============ -->
+  <main id="desktop" class="desktop" aria-label="Bureau du portfolio">
+    <div class="wallpaper" id="wallpaper">
+      <svg class="waves" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="wvA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="wvB" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        </defs>
+        <path d="M-100 620C180 470 420 760 760 600S1260 380 1560 520V1000H-100Z" fill="url(#wvA)"/>
+        <path d="M-100 720C260 600 520 820 860 700S1300 560 1560 660V1000H-100Z" fill="url(#wvB)"/>
+        <path d="M-100 380C220 240 520 520 820 380S1240 180 1560 300" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <header class="menubar" id="menubar"></header>
+
+    <section class="widgets" id="widgets" aria-label="Widgets"></section>
+    <section class="desk-icons" id="deskIcons" aria-label="Fichiers du bureau"></section>
+    <div class="select-rect" id="selectRect"></div>
+
+    <div class="windows" id="windows"></div>
+    <div class="notif-stack" id="notifs" aria-live="polite"></div>
+
+    <nav class="dock-wrap" aria-label="Dock">
+      <div class="dock glass" id="dock"></div>
+    </nav>
+
+    <div class="spotlight" id="spotlight" role="dialog" aria-label="Recherche">
+      <div class="sp-box glass">
+        <label class="sp-input"><span class="sp-ico"></span><input id="spInput" type="text" placeholder="Rechercher un projet, une app…" autocomplete="off" spellcheck="false"></label>
+        <div class="sp-results" id="spResults"></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="dim" id="dim"></div>
+
+  <noscript>
+    <div class="noscript">Ce portfolio a besoin de JavaScript pour s'afficher.</div>
+  </noscript>
+
+  <script defer src="config.js"></script>
+  <script defer src="logos.js"></script>
+  <script defer src="core.js"></script>
+  <script defer src="apps.js"></script>
+</body>
+</html>

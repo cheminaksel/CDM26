@@ -1,0 +1,2 @@
+Photos des projets photo (gallery) et versions avant retouche (before).
+Ex. : portraits-01.jpg, portraits-01-avant.jpg

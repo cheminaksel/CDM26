@@ -1,0 +1,2 @@
+Mets ici ton avatar (ex. avatar.jpg), ton CV (cv.pdf) et un éventuel fond d’écran.
+Sous-dossiers : videos/, timelines/, photos/, storyboards/ (voir LISEZ-MOI.txt à la racine).

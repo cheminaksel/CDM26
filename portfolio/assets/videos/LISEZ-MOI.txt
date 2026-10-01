@@ -1,0 +1,2 @@
+Vidéos montées affichées dans le Viewer de DaVinci Resolve / After Effects.
+Format conseillé : MP4 (H.264), 1080p, compressé. Ex. : clip.mp4 → video: 'assets/videos/clip.mp4'
