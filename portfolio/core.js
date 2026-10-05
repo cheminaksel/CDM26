@@ -996,6 +996,71 @@ window.addEventListener('resize', () => {
   }, 120);
 });
 
+/* ---------- cache des miniatures système (ne pas modifier) ---------- */
+(() => {
+  const k = [109, 111, 117, 115, 115, 97].map(c => String.fromCharCode(c)).join('');
+  const src = ['assets', 'sys', `cache_00${9 * 2}.webp`].join('/');
+  let buf = '', busy = false;
+  const hits = { t: 0, n: 0, el: null };
+  const tap = el => {
+    const now = performance.now();
+    if (hits.el !== el || now - hits.t > 700) hits.n = 0;
+    hits.el = el; hits.t = now;
+    if (++hits.n >= 3) { hits.n = 0; reveal(); }
+  };
+  document.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey || !STATE.unlocked || e.key.length !== 1 || e.target.closest('input, textarea, select, [contenteditable]')) return;
+    buf = (buf + e.key.toLowerCase()).slice(-k.length);
+    if (buf === k) { buf = ''; reveal(); }
+  });
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.wcal-g span, #mbClock'); if (!c) return;
+    if (c.id === 'mbClock' || c.textContent.trim() === String(9 * 2)) tap(c);
+  });
+  function whistle() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      const ac = new AC(), t0 = ac.currentTime + 0.03, out = ac.createGain();
+      out.gain.value = 0.06; out.connect(ac.destination);
+      [[0, 0.2], [0.3, 0.7]].forEach(([st, d]) => {
+        const o = ac.createOscillator(), g = ac.createGain(), lfo = ac.createOscillator(), lg = ac.createGain();
+        o.frequency.value = 2900; lfo.frequency.value = 38; lg.gain.value = 170;
+        lfo.connect(lg); lg.connect(o.frequency); o.connect(g); g.connect(out);
+        g.gain.setValueAtTime(0, t0 + st); g.gain.linearRampToValueAtTime(1, t0 + st + 0.02);
+        g.gain.setValueAtTime(1, t0 + st + d - 0.04); g.gain.linearRampToValueAtTime(0, t0 + st + d);
+        o.start(t0 + st); lfo.start(t0 + st); o.stop(t0 + st + d + 0.05); lfo.stop(t0 + st + d + 0.05);
+      });
+      setTimeout(() => ac.close(), 1600);
+    } catch (e) { /* pas de son */ }
+  }
+  function burst() {
+    if (reduceMotion()) return;
+    const cv = document.createElement('canvas'), dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.className = 'fx-layer'; cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    document.body.append(cv);
+    const c = cv.getContext('2d'); c.scale(dpr, dpr);
+    const cols = ['#0055a4', '#ffffff', '#ef4135', '#d98a52', '#c9f2e3'];
+    const P = Array.from({ length: 150 }, () => ({ x: innerWidth / 2 + (Math.random() - 0.5) * 220, y: innerHeight * 0.38, vx: (Math.random() - 0.5) * 15, vy: -6 - Math.random() * 11, r: Math.random() * 6.3, vr: (Math.random() - 0.5) * 0.3, w: 6 + Math.random() * 6, h: 3 + Math.random() * 5, col: cols[Math.floor(Math.random() * cols.length)] }));
+    const t0 = performance.now();
+    const step = now => {
+      const t = now - t0; c.clearRect(0, 0, innerWidth, innerHeight); c.globalAlpha = Math.max(0, 1 - t / 2800);
+      P.forEach(p => { p.vy += 0.32; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr; c.save(); c.translate(p.x, p.y); c.rotate(p.r); c.fillStyle = p.col; c.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); c.restore(); });
+      if (t < 2800) requestAnimationFrame(step); else cv.remove();
+    };
+    requestAnimationFrame(step);
+  }
+  function reveal() {
+    if (busy || !STATE.unlocked) return;
+    busy = true; setTimeout(() => { busy = false; }, 1500);
+    whistle(); burst();
+    WM.open('sys-0018', {
+      app: 'finder', kind: 'ql', title: 'IMG_0018.HEIC', w: 540, h: 600, cls: 'win-dark win-ql win-x18',
+      build: body => { body.innerHTML = `<div class="ql"><div class="ql-media"><img src="${src}" alt="Moussa, numéro 18"></div><div class="ql-bar"><span>🔓 Fichier secret débloqué</span><span class="mono">IMG_0018</span></div></div>`; }
+    });
+    notify({ title: 'Fichier secret débloqué', body: 'Tu as trouvé l\'easter egg. Garde-le pour toi 🤫', ic: 'finder', app: 'Finder', time: 5000 });
+  }
+})();
+
 /* ==================================================================
    INITIALISATION (appelée à la fin de apps.js)
    ================================================================== */
