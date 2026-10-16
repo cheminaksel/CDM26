@@ -1,0 +1,17 @@
+SCÈNE D'ARRIVÉE EN 3D (MacBook, appareil photo, storyboard, tasse)
+==================================================================
+Les images assets/arrivee/*.jpg sont des rendus Blender (moteur Cycles) de scene.py.
+Tu n'as rien à faire ici pour que le site marche : ce dossier sert seulement à
+refaire les images si tu veux changer la scène (couleur du bois, angle, objets…).
+
+Pour refaire les rendus :
+  1. pip install bpy   (module Blender pour Python 3.11)
+  2. Mettre dans un dossier « tex » à côté de scene.py :
+       lock.png    capture de l'écran de verrouillage du site (1512 × 982)
+       sheet.png   capture de feuille.html (1754 × 1240)
+       speaker.png motif de grille de haut-parleur (points sombres sur fond gris)
+     et dans « hdri » : apartment.exr (éclairage CC0, paquet npm @pmndrs/assets)
+  3. python scene.py desk 2560 1440 96 bureau.png
+     python scene.py mobile 1080 1920 96 bureau-mobile.png
+  Chaque rendu écrit aussi un .json avec la position de l'écran sur l'image :
+  recopie ces valeurs dans core.js → LD_SHOTS (screen et mac).

@@ -164,7 +164,8 @@ const slug = s => norm(s).replace(/[«»"']/g, '').replace(/—/g, '-').replace(
 const appFor = p => p.app || (p.type === 'design' && (p.format || 'affiche') === 'affiche' ? 'ps' : TYPE[p.type].app);
 const extFor = p => p.type === 'design' && appFor(p) === 'ps' ? 'psd' : TYPE[p.type].ext;
 const fileName = p => p.file || `${ucfirst(slug(p.short || p.title))}.${extFor(p)}`;
-const REEL = Object.assign({ id: 'showreel', short: 'Showreel', category: 'reel', type: 'video', client: CONFIG.name, year: '2026', role: 'Réalisation, montage, étalonnage', description: "Une sélection de mes meilleurs plans : clips, aftermovies, films de marque et projets personnels.", tags: ['Showreel'], tools: ['DaVinci Resolve', 'After Effects'], file: 'Showreel.mov', timeline: '' }, CONFIG.showreel);
+CONFIG.socials = (CONFIG.socials || []).filter(s => s.url);
+const REEL = Object.assign({ id: 'showreel', short: 'Showreel', category: 'reel', type: 'video', client: CONFIG.name, year: '2026', role: 'Réalisation, montage, étalonnage', description: "Une sélection de mes meilleurs plans : clips, événements, sport et contenus pour les réseaux.", tags: ['Showreel'], tools: ['DaVinci Resolve', 'After Effects'], file: 'Showreel.mov', timeline: '' }, CONFIG.showreel);
 const byId = id => id === 'showreel' ? REEL : CONFIG.projects.find(p => p.id === id);
 const coverOf = p => p.cover || asList(p.gallery)[0] || '';
 
@@ -679,17 +680,17 @@ function buildDock() {
    BUREAU — icônes
    ================================================================== */
 const DESK = [
-  { id: 'pro', label: 'Projets pro', icon: 'folderPro', open: f => openFolder('pro', f) },
-  { id: 'sco', label: 'Projets scolaires', icon: 'folderSchool', open: f => openFolder('scolaire', f) },
-  { id: 'photos', label: 'Photos', icon: 'folderPhoto', open: f => openFolder('photo', f) },
-  { id: 'motion', label: 'Motion design', icon: 'folderMotion', open: f => openFolder('motion', f) },
+  { id: 'pro', label: 'Projets pro', icon: 'folderPro', open: f => openFolder('pro', f), has: p => p.category === 'pro' },
+  { id: 'sco', label: 'Projets scolaires', icon: 'folderSchool', open: f => openFolder('scolaire', f), has: p => p.category === 'scolaire' },
+  { id: 'photos', label: 'Photos', icon: 'folderPhoto', open: f => openFolder('photo', f), has: p => p.type === 'photo' },
+  { id: 'motion', label: 'Motion design', icon: 'folderMotion', open: f => openFolder('motion', f), has: p => p.type === 'motion' },
   { id: 'story', label: 'Storyboards', icon: 'folderStory', open: f => openNotes('folder:storyboards', f) },
   { id: 'coul', label: 'Coulisses', icon: 'folderClap', open: f => openCoulisses(0, f) },
   { id: 'reel', label: 'Showreel.mov', icon: 'mov', open: f => openShowreel(f) },
   { id: 'pres', label: 'Présentation.key', icon: 'key', open: f => openPresentation(f) },
   { id: 'cv', label: 'CV.pdf', icon: 'pdf', open: f => openCV(f) },
   { id: 'contact', label: 'Contact.vcf', icon: 'vcf', open: f => openContact(f) }
-];
+].filter(d => !d.has || CONFIG.projects.some(d.has));   // un dossier vide n'est pas posé sur le bureau
 function buildDesk() {
   const wrap = $('#deskIcons');
   wrap.innerHTML = '';
@@ -855,7 +856,7 @@ const POLA_LOOK = [[-5, 0.04, 0.02], [4, 0.52, 0.1], [3, 0.1, 0.5], [-6, 0.56, 0
 function buildPolas() {
   const old = $('#polas'); if (old) old.remove();
   const list = COUL(); if (!list.length) return;
-  const wrap = h(`<section class="polas" id="polas" aria-label="Photos de ${esc(firstName())} au travail">${list.slice(0, 6).map((c, i) => `<figure class="pola" data-i="${i}" tabindex="0" role="button" aria-label="Voir la photo : ${esc(c.caption || 'Coulisses')}" style="--i:${i};--r:${POLA_LOOK[i][0]}deg"><div class="pola-img">${coulMedia(c)}</div><figcaption>${esc(c.caption || '')}</figcaption></figure>`).join('')}</section>`);
+  const wrap = h(`<section class="polas" id="polas" aria-label="Photos de ${esc(firstName())} au travail">${list.slice(0, 6).map((c, i) => `<figure class="pola" data-i="${i}" tabindex="0" role="button" aria-label="Voir la photo : ${esc(c.caption || 'Coulisses')}" style="--i:${i};--r:${POLA_LOOK[i][0]}deg"><div class="pola-img">${coulMedia(c)}</div><figcaption${(c.caption || '').length > 17 ? ' class="long"' : ''}>${esc(c.caption || '')}</figcaption></figure>`).join('')}</section>`);
   $('#desktop').insertBefore(wrap, $('#windows'));
   wrap.addEventListener('keydown', e => { const f = e.target.closest('.pola'); if (f && e.key === 'Enter') openCoulisses(+f.dataset.i, f.getBoundingClientRect()); });
   wrap.addEventListener('pointerdown', e => {
@@ -1024,18 +1025,36 @@ window.addEventListener('resize', () => {
    On entre en cliquant sur le Mac ou en scrollant : la caméra plonge
    dans l'écran, puis la session s'ouvre toute seule.
    ================================================================== */
-const LD = { p: 0, target: 0, raf: 0, tween: 0, done: false, idle: 0, geo: null, on: false };
+const LD = { p: 0, target: 0, raf: 0, tween: 0, done: false, idle: 0, geo: null, on: false, shot: null };
 const ldEase = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+/* Rendus 3D de la scène (Blender). « screen » = coins de l'écran du Mac sur l'image
+   (haut-gauche, haut-droit, bas-droit, bas-gauche, de 0 à 1) ; « mac » = zone cliquable. */
+const LD_SHOTS = {
+  desk: { w: 2560, h: 1440, srcs: [[1600, 'assets/arrivee/bureau-1600.jpg'], [2560, 'assets/arrivee/bureau-2560.jpg']],
+    screen: [[0.36563, 0.23916], [0.63437, 0.23916], [0.63453, 0.54923], [0.36547, 0.54923]], mac: [0.3334, 0.2241, 0.6666, 0.7358] },
+  mobile: { w: 1080, h: 1920, srcs: [[1080, 'assets/arrivee/bureau-mobile.jpg']],
+    screen: [[0.28014, 0.26066], [0.71986, 0.26066], [0.70792, 0.41854], [0.29208, 0.41854]], mac: [0.2445, 0.2524, 0.7555, 0.5429] }
+};
+const LD_SCREEN = [1000, 649];   // taille de l'écran « vivant » avant déformation
+function quadMatrix(w, h, p) {
+  // homographie : rectangle w×h → quadrilatère p (4 coins, sens horaire depuis haut-gauche)
+  const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = p;
+  const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3, dy1 = y1 - y2, dy2 = y3 - y2, dy3 = y0 - y1 + y2 - y3;
+  const den = dx1 * dy2 - dx2 * dy1, g = (dx3 * dy2 - dx2 * dy3) / den, k = (dx1 * dy3 - dx3 * dy1) / den;
+  const a = x1 - x0 + g * x1, b = x3 - x0 + k * x3, d = y1 - y0 + g * y1, e = y3 - y0 + k * y3;
+  return `matrix3d(${[a / w, d / w, 0, g / w, b / h, e / h, 0, k / h, 0, 0, 1, 0, x0, y0, 0, 1].map(n => +n.toFixed(8)).join(',')})`;
+}
 function buildLanding() {
   const L = $('#landing'); if (!L) return;
   LD.on = true;
-  const kb = [Array(14).fill(1), [...Array(13).fill(1), 1.5], [1.5, ...Array(13).fill(1)], [1.8, ...Array(11).fill(1), 1.8], [2.3, ...Array(10).fill(1), 2.3], [1, 1, 1, 1.25, 5.4, 1.25, 1, 1, 1, 1]];
-  $('#ldKb').innerHTML = kb.map((r, i) => `<div class="ld-row${i === 0 ? ' fn' : ''}">${r.map(w => `<i style="flex:${w}"></i>`).join('')}</div>`).join('');
   const wp = $('#wallpaper'), cs = getComputedStyle(wp);
   const waves = CONFIG.wallpaper ? '' : ($('svg', wp) || { outerHTML: '' }).outerHTML;
   $('#ldScreen').innerHTML = `<div class="lds-wp" style="background-color:${cs.backgroundColor};background-image:${cs.backgroundImage}">${waves}</div>
     <div class="lds-lock"><div class="lds-date"></div><div class="lds-time"></div><div class="lds-user"><span class="lds-av">${avatarHTML()}</span><b>${esc(CONFIG.name)}</b><small>Clique pour entrer</small></div></div><i class="lds-glare"></i>`;
   $('#ldBrand').innerHTML = `<span class="ld-mono">${monogram()}</span><span><b>${esc(CONFIG.name)}</b><small>${esc(CONFIG.role)} · Portfolio</small></span>`;
+  const img = $('#ldPhoto');
+  img.addEventListener('load', () => L.classList.add('ready'));
+  img.addEventListener('error', () => L.classList.add('ready', 'no-photo'));
   ldClock(); layoutLanding();
   window.addEventListener('resize', layoutLanding);
   L.addEventListener('wheel', ldWheel, { passive: false });
@@ -1047,6 +1066,7 @@ function buildLanding() {
   }, { passive: false });
   L.addEventListener('touchend', () => { if (LD.done || LD.tween) return; if (LD.target > 0.3) ldGo(); else { LD.target = 0; ldKick(); } });
   $('#ldMac').addEventListener('click', () => ldGo());
+  $('#ldScreen').addEventListener('click', () => ldGo());
   $('#ldSkip').addEventListener('click', () => ldGo(true));
   document.addEventListener('keydown', ldKey, true);
 }
@@ -1059,20 +1079,28 @@ function ldClock() {
 }
 function layoutLanding() {
   const L = $('#landing'); if (!L || LD.done) return;
-  const vw = innerWidth, vh = innerHeight, narrow = vw < 760;
-  // sur téléphone, la caméra et la feuille passent devant le Mac (cf. .ld-narrow)
-  L.classList.toggle('ld-narrow', narrow);
-  const k = narrow ? Math.min(vw / 580, vh / 1000) : Math.min(vw / 1200, vh / 780);
-  const left = vw / 2 - 600 * k, top = narrow ? vh / 2 - 440 * k : (vh - 760 * k) / 2 + 10 * k;
-  const rig = $('#ldRig');
-  rig.style.transform = `translate(${left.toFixed(1)}px,${top.toFixed(1)}px) scale(${k.toFixed(4)})`;
-  L.style.setProperty('--hz', (top + 405 * k).toFixed(1) + 'px');
+  const vw = innerWidth, vh = innerHeight;
+  const shot = vw / vh < 0.8 ? LD_SHOTS.mobile : LD_SHOTS.desk;
+  // image adaptée à l'écran (taille réelle en pixels)
+  const need = Math.max(vw, vh * shot.w / shot.h) * Math.min(devicePixelRatio || 1, 2);
+  const src = (shot.srcs.find(([w]) => w >= need) || shot.srcs[shot.srcs.length - 1])[1];
+  const img = $('#ldPhoto');
+  const cur = img.getAttribute('src'), rank = u => shot.srcs.findIndex(x => x[1] === u);
+  if (!cur || LD.shot !== shot || rank(src) > rank(cur)) img.src = src;   // on ne redescend jamais en qualité
+  LD.shot = shot;
+  // « cover » : la photo remplit la fenêtre
+  const k = Math.max(vw / shot.w, vh / shot.h), dw = shot.w * k, dh = shot.h * k;
+  const ox = (vw - dw) / 2, oy = (vh - dh) / 2;
+  img.style.width = dw + 'px'; img.style.height = dh + 'px';
+  img.style.transform = `translate(${ox.toFixed(1)}px,${oy.toFixed(1)}px)`;
+  const P = shot.screen.map(([u, v]) => [ox + u * dw, oy + v * dh]);
+  $('#ldScreen').style.transform = quadMatrix(LD_SCREEN[0], LD_SCREEN[1], P);
+  const [mx0, my0, mx1, my1] = shot.mac, hit = $('#ldMac');
+  Object.assign(hit.style, { left: ox + mx0 * dw + 'px', top: oy + my0 * dh + 'px', width: (mx1 - mx0) * dw + 'px', height: (my1 - my0) * dh + 'px' });
   // géométrie du zoom : l'écran du Mac doit finir par remplir la fenêtre
-  const scene = $('#ldScene'), prev = scene.style.transform;
-  scene.style.transform = 'none';
-  const r = $('#ldScreen').getBoundingClientRect();
-  scene.style.transform = prev;
-  LD.geo = { cx: r.left + r.width / 2, cy: r.top + r.height / 2, S: Math.max(vw / r.width, vh / r.height) * 1.04 };
+  const xs = P.map(p => p[0]), ys = P.map(p => p[1]);
+  const bw = Math.max(...xs) - Math.min(...xs), bh = Math.max(...ys) - Math.min(...ys);
+  LD.geo = { cx: xs.reduce((a, b) => a + b) / 4, cy: ys.reduce((a, b) => a + b) / 4, S: Math.max(vw / bw, vh / bh) * 1.08 };
   ldRender(LD.p);
 }
 function ldRender(q) {

@@ -112,6 +112,7 @@ const ICONS = {
   lrc: () => `<svg viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(4 4) scale(2.3333)"><rect x="1" y="1.3" width="22" height="21.4" rx="3" fill="#31a8ff"/><path fill="#001e36" d="${LOGO_PATHS.lrc}"/></g></svg>`,
   ai: () => adobeIcon('ai'),
 
+  capcut: () => `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="13" fill="#000"/><g transform="translate(9 9.6) scale(.96)" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"><path d="M43.5 35.9L4.505 16.242v-1.383a3.717 3.717 0 0 1 3.722-3.728h21.998a3.717 3.717 0 0 1 3.722 3.728v1.695"/><path d="m43.5 11.836l-39 19.66l.005 1.645a3.717 3.717 0 0 0 3.723 3.728h21.996a3.717 3.717 0 0 0 3.723-3.728v-1.948"/></g></svg>`,
   canva: u => `<svg viewBox="0 0 64 64" aria-hidden="true"><defs>
       <linearGradient id="${u}g" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00c4cc"/><stop offset=".5" stop-color="#3b6cf0"/><stop offset="1" stop-color="#7d2ae8"/></linearGradient>
       <linearGradient id="${u}h" x1=".857" y1=".857" x2="23.143" y2="23.143" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00c4cc"/><stop offset=".5" stop-color="#3b6cf0"/><stop offset="1" stop-color="#7d2ae8"/></linearGradient></defs>
@@ -181,7 +182,7 @@ const socialLogo = n => (SOCIAL[n] ? SOCIAL[n].svg(uid()) : `<svg viewBox="0 0 2
 /* ---------- Logo d'un logiciel à partir de son nom ---------- */
 const TOOL_KEYS = [
   [/resolve|davinci/i, 'resolve'], [/after\s*effects/i, 'ae'], [/premiere/i, 'pr'], [/photoshop/i, 'ps'],
-  [/lightroom\s*classic/i, 'lrc'], [/lightroom/i, 'lr'], [/illustrator/i, 'ai'], [/canva/i, 'canva'], [/keynote/i, 'keynote']
+  [/lightroom\s*classic/i, 'lrc'], [/lightroom/i, 'lr'], [/illustrator/i, 'ai'], [/canva/i, 'canva'], [/capcut/i, 'capcut'], [/keynote/i, 'keynote']
 ];
 function toolLogo(name) {
   const hit = TOOL_KEYS.find(([re]) => re.test(name));

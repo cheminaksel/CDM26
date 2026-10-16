@@ -67,42 +67,21 @@ img, video { display: block; }
 /* ==================================================================
    ARRIVÉE — le MacBook posé sur la table
    ================================================================== */
-.landing { position: fixed; inset: 0; z-index: 9900; overflow: hidden; background: #0e0f13; color: #fff; touch-action: none; --hz: 60%; }
+.landing { position: fixed; inset: 0; z-index: 9900; overflow: hidden; background: #0e0f13; color: #fff; touch-action: none; }
 .landing.out { opacity: 0; transition: opacity .5s ease; pointer-events: none; }
 .ld-scene { position: absolute; inset: 0; transform-origin: 0 0; }
 .landing.zooming .ld-scene { will-change: transform; }
-.ld-wall { position: absolute; inset: 0; background: radial-gradient(55% 60% at 16% 4%, rgba(255,186,120,.2), transparent 70%), radial-gradient(40% 35% at 50% var(--hz), rgba(120,100,255,.16), transparent 70%), linear-gradient(180deg, #1b1c23, #121318 70%); }
-.ld-desk { position: absolute; left: -40%; right: -40%; top: var(--hz); height: 160vh; transform-origin: 50% 0; transform: perspective(900px) rotateX(58deg);
-  background:
-    radial-gradient(28% 22% at 50% 4%, rgba(150,120,255,.22), transparent 70%),
-    radial-gradient(45% 40% at 22% 0%, rgba(255,190,130,.18), transparent 70%),
-    repeating-linear-gradient(180deg, rgba(0,0,0,.07) 0 1px, transparent 1px 7px, rgba(255,230,200,.035) 7px 8px, transparent 8px 19px, rgba(0,0,0,.05) 19px 21px, transparent 21px 37px),
-    repeating-linear-gradient(176deg, transparent 0 60px, rgba(0,0,0,.06) 60px 64px, transparent 64px 140px),
-    linear-gradient(180deg, #634330, #45301e 35%, #2c1d11);
-  box-shadow: inset 0 2px 0 rgba(255,220,180,.16), inset 0 10px 18px -8px rgba(0,0,0,.6); }
-.ld-rig { position: absolute; left: 0; top: 0; width: 1200px; height: 760px; transform-origin: 0 0; }
-.ld-glow { position: absolute; left: 330px; top: 430px; width: 540px; height: 160px; border-radius: 50%; background: radial-gradient(closest-side, rgba(140,110,255,.32), transparent); }
-.ld-shadow { position: absolute; left: 270px; top: 452px; width: 660px; height: 150px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); }
-.ld-mac { position: absolute; left: 340px; top: 60px; width: 520px; height: 520px; perspective: 1700px; perspective-origin: 50% 30%; cursor: pointer; outline: none; }
-.ld-tilt { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(-12deg); transform-origin: 50% 70%; }
-.ld-lid { position: absolute; left: 0; top: 30px; width: 520px; height: 340px; padding: 11px 11px 20px; border-radius: 18px 18px 7px 7px; background: #09090a; box-shadow: inset 0 0 0 1.6px #6a6c71, inset 0 0 0 3.5px #0c0c0d; transform-origin: 50% 100%; transform: rotateX(12deg); }
-.ld-screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 9px 9px 2px 2px; container-type: inline-size; background: #0b1028; }
-.ld-notch { position: absolute; left: 50%; top: 11px; width: 66px; height: 11px; margin-left: -33px; border-radius: 0 0 6px 6px; background: #09090a; }
-.ld-base { position: absolute; left: 0; top: 370px; width: 520px; height: 350px; border-radius: 4px 4px 18px 18px; transform-origin: 50% 0; transform: rotateX(90deg); transform-style: preserve-3d; background: linear-gradient(180deg, #9da0a6, #8a8d93 60%, #7c7f85); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
-.ld-kb { position: absolute; left: 70px; right: 70px; top: 22px; height: 150px; display: flex; flex-direction: column; gap: 4px; padding: 5px; border-radius: 6px; background: #2b2c30; }
-.ld-row { flex: 1; display: flex; gap: 4px; }
-.ld-row.fn { flex: .6; }
-.ld-row i { border-radius: 3px; background: #0d0d0f; box-shadow: inset 0 -1px 0 rgba(255,255,255,.07); }
-.ld-spk { position: absolute; top: 24px; width: 46px; height: 146px; background: radial-gradient(circle, rgba(0,0,0,.45) 0 .9px, transparent 1.2px) 0 0 / 5px 5px; }
-.ld-spk.l { left: 14px; } .ld-spk.r { right: 14px; }
-.ld-pad { position: absolute; left: 50%; top: 186px; width: 220px; height: 136px; margin-left: -110px; border-radius: 8px; background: linear-gradient(180deg, #969a9f, #8b8e94); box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
-.ld-edge { position: absolute; left: 4px; right: 4px; bottom: 0; height: 13px; border-radius: 0 0 10px 10px; transform-origin: 50% 100%; transform: rotateX(-90deg); background: linear-gradient(180deg, #6c6f74, #3f4145); }
-.ld-mac:hover .ld-screen::after, .ld-mac:focus-visible .ld-screen::after { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.06); }
-.ld-cam { position: absolute; left: 860px; top: 372px; width: 300px; height: 220px; filter: drop-shadow(0 18px 14px rgba(0,0,0,.55)); }
-.ld-cam svg, .ld-paper svg { width: 100%; height: 100%; }
-.ld-paper { position: absolute; left: 30px; top: 470px; width: 300px; height: 210px; transform: perspective(700px) rotateX(52deg) rotateZ(-9deg); transform-origin: 50% 100%; filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }
-.ld-narrow .ld-cam { left: 615px; top: 585px; width: 240px; height: 176px; }
-.ld-narrow .ld-paper { left: 318px; top: 612px; width: 262px; height: 184px; }
+.ld-photo { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; opacity: 0; transition: opacity .7s ease; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.landing.ready .ld-photo { opacity: 1; }
+/* léger vignettage, comme sur une vraie photo */
+.ld-scene::after { content: ""; position: absolute; inset: -2px; pointer-events: none; background: radial-gradient(120% 95% at 50% 45%, transparent 55%, rgba(0,0,0,.45)); }
+.landing.zooming .ld-scene::after { opacity: 0; }
+.ld-hit { position: absolute; border: 0; padding: 0; border-radius: 12px; cursor: pointer; background: none; }
+/* l'écran « vivant » est posé pile sur l'écran du rendu (transformation matrix3d) */
+.ld-screen { position: absolute; left: 0; top: 0; width: 1000px; height: 649px; transform-origin: 0 0; overflow: hidden; container-type: inline-size; background: #0b1028; cursor: pointer; outline: none; opacity: 0; transition: opacity .5s ease .2s, filter .25s ease; backface-visibility: hidden; }
+.landing.ready .ld-screen { opacity: 1; }
+.ld-screen::before { content: ""; position: absolute; z-index: 3; left: 50%; top: 0; width: 11%; height: 3.2%; margin-left: -5.5%; border-radius: 0 0 1.1cqw 1.1cqw; background: #050506; }
+.ld-screen:hover, .ld-screen:focus-visible, .ld-hit:hover ~ .ld-screen { filter: brightness(1.12); }
 /* écran : réplique de l'écran verrouillé */
 .lds-wp { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .lds-wp svg { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -288,6 +267,7 @@ html[data-theme="dark"] .wg-notes { background: #1c1c1e; color: #f5f5f7; border-
 .pola-ph svg { width: 30%; height: auto; }
 .pola-ph small { font-size: 11px; font-weight: 600; letter-spacing: .02em; }
 .pola figcaption { height: 38px; display: flex; align-items: center; justify-content: center; font-family: "Marker Felt", "Segoe Print", "Comic Sans MS", var(--font); font-size: 15px; color: #33302a; white-space: nowrap; overflow: hidden; }
+.pola figcaption.long { font-size: 12.5px; letter-spacing: -.01em; }
 
 /* pense-bête (Stickies) */
 .sticky { position: absolute; z-index: 12; left: 392px; top: calc(var(--mb) + 26px); width: 214px; padding: 0 16px 14px; background: linear-gradient(180deg, #fff7a8, #fdec6f); color: #3b3104; font-family: "Marker Felt", "Comic Sans MS", "Segoe Print", var(--font); font-size: 14.5px; line-height: 1.35; box-shadow: 0 14px 30px rgba(0,0,0,.28); transform: rotate(-1.5deg); border-radius: 2px; }

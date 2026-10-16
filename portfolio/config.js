@@ -26,16 +26,17 @@
    ================================================================== */
 
 const CONFIG = {
-  name: 'Prénom Nom',
-  initials: 'PN',
-  role: 'Vidéaste & photographe',
-  city: 'Ville, France',
-  email: 'contact@exemple.fr',
-  phone: '',             // ex. '06 12 34 56 78' (vide = masqué)
+  name: 'Ndimby Ramahafadrahona',
+  initials: 'NR',
+  role: 'Vidéaste freelance',
+  city: 'Blois, France',
+  email: 'ndyxxprod@gmail.com',
+  phone: '+33 7 61 52 26 26',   // vide = masqué
   status: 'Disponible pour des projets freelance',
-  avatar: '',            // ex. 'assets/avatar.jpg' (sinon les initiales s'affichent)
-  cv: '',                // ex. 'assets/cv.pdf'
-  wallpaper: '',         // ex. 'assets/fond.jpg' (sinon fond dégradé)
+  avatar: 'assets/avatar.jpg',   // sinon les initiales s'affichent
+  cv: 'assets/cv.pdf',
+  cvPages: ['assets/cv-1.jpg', 'assets/cv-2.jpg'],   // aperçu du CV (pages en image)
+  wallpaper: '',                 // ex. 'assets/fond.jpg' (sinon fond dégradé)
 
   /* Formulaire de contact (page Contact + app Mail)
      - Laisse vide : le message s'ouvre tout prêt dans la messagerie du visiteur.
@@ -45,22 +46,29 @@ const CONFIG = {
   formEndpoint: '',
 
   showreel: {
-    title: 'Showreel 2026', duration: '1:30', video: '', cover: '',
+    title: 'Showreel 2026', duration: '', video: '', cover: '',
     colors: ['#ff5e3a', '#6a3dff']
   },
 
-  // network : instagram, youtube, vimeo, linkedin, tiktok ou behance (logo officiel)
+  /* Réseaux : instagram, tiktok, youtube, linkedin, vimeo ou behance (logo officiel).
+     Un réseau sans « url » n'est pas affiché. */
   socials: [
-    { network: 'instagram', handle: '@pseudo', url: 'https://instagram.com/' },
-    { network: 'youtube', handle: 'Ma chaîne', url: 'https://youtube.com/' },
-    { network: 'vimeo', handle: 'vimeo.com/pseudo', url: 'https://vimeo.com/' },
-    { network: 'linkedin', handle: 'Prénom Nom', url: 'https://linkedin.com/' }
+    { network: 'instagram', handle: '', url: '' },
+    { network: 'tiktok', handle: '', url: '' },
+    { network: 'youtube', handle: '', url: '' },
+    { network: 'linkedin', handle: 'Ndimby Ramahafadrahona', url: '' }
   ],
 
   bio: [
-    "Vidéaste avant tout, photographe aussi. Je raconte des histoires en images : clips, aftermovies, films de marque, reportages.",
-    "J'aime tout le processus, de l'écriture et du storyboard au tournage, jusqu'au montage et à l'étalonnage, où le film prend vraiment sa couleur.",
-    "Basé en France, je me déplace pour les tournages et je suis ouvert aux collaborations, missions freelance et projets en équipe."
+    "Étudiant en BUT MMI (parcours communication) à l'IUT de Blois, je développe mon activité de vidéaste freelance en parallèle de mes études.",
+    "Je réalise des contenus audiovisuels de la prise de vue au montage pour valoriser des événements, des projets et des marques : vidéos promotionnelles, couverture événementielle et contenus pour les réseaux sociaux.",
+    "À côté, je gère ma chaîne YouTube, je produis les vidéos du BDE MMI Mirage et je crée du contenu pour TikTok et Instagram."
+  ],
+
+  languages: ['Français : courant', 'Malgache : langue maternelle', 'Anglais : B2'],
+  interests: [
+    'Sport : tournois de football et championnat national (Madagascar), basketball, taekwondo (ceinture noire)',
+    'Audiovisuel : création vidéo et photographie'
   ],
 
   /* PHOTOS DE TOI AU TRAVAIL (posées sur le bureau + dossier « Coulisses »)
@@ -68,162 +76,161 @@ const CONFIG = {
      Tant que « photo » est vide, un emplacement « Photo à venir » s'affiche.
      Tu peux en mettre autant que tu veux (6 maximum sont posées sur le bureau). */
   coulisses: [
-    { photo: '', caption: 'En tournage' },
-    { photo: '', caption: 'Au montage' },
-    { photo: '', caption: 'Shooting en studio' },
-    { photo: '', caption: 'Repérages' }
+    { photo: 'assets/coulisses/mariage.jpg', caption: 'Shooting d\'un mariage' },
+    { photo: 'assets/coulisses/tournage-clip.jpg', caption: 'Tournage d\'un clip' },
+    { photo: 'assets/coulisses/jamais-sans-camera.jpg', caption: 'Jamais sans ma caméra' }
   ],
 
   /* PRÉSENTATION (menu « Présentation » en haut de l'écran)
      Les diapositives sont générées à partir de tout le contenu de ce fichier. */
   presentation: {
     hello: 'Bonjour, moi c\'est',
-    pitch: 'Je raconte des histoires en images — de l\'idée au film fini.',
+    pitch: 'Vidéos promotionnelles, couverture événementielle et contenus pour les réseaux sociaux — de la prise de vue au montage.',
     services: [
-      { icon: 'film', title: 'Vidéo', text: 'Clips, aftermovies, films de marque et reportages : écriture, tournage, montage.' },
-      { icon: 'sparkle', title: 'Motion design', text: 'Titres animés, génériques, habillages et typographie cinétique.' },
-      { icon: 'camera', title: 'Photo', text: 'Portrait, produit et photo de rue, retouche et étalonnage cohérent.' },
-      { icon: 'pencil', title: 'Storyboard', text: 'Découpage technique et storyboards pour préparer chaque tournage.' }
+      { icon: 'film', title: 'Vidéo promotionnelle', text: 'Des films pour valoriser une marque, un projet ou un lieu : tournage, montage, étalonnage.' },
+      { icon: 'camera', title: 'Événementiel', text: 'Couverture vidéo et photo d\'événements : mariages, soirées, compétitions sportives.' },
+      { icon: 'sparkle', title: 'Réseaux sociaux', text: 'Des formats courts pour TikTok, Instagram et YouTube, pensés pour accrocher dès la première seconde.' },
+      { icon: 'pencil', title: 'Storyboard', text: 'Un découpage plan par plan pour préparer chaque tournage, du clip au film sportif.' }
     ],
-    closing: 'Un projet, une idée, une envie de collaborer ? Écris-moi, je réponds vite.'
+    closing: 'Un projet, un événement, une idée de vidéo ? Écris-moi, je réponds vite.'
   },
 
   skills: [
-    { label: 'Montage vidéo', value: 92 },
-    { label: 'Étalonnage', value: 82 },
-    { label: 'Photographie', value: 85 },
-    { label: 'Motion design', value: 72 },
-    { label: 'Storyboard & écriture', value: 78 },
-    { label: 'Prise de son', value: 60 }
+    { label: 'Montage vidéo & postproduction', value: 92 },
+    { label: 'Tournage & prise de vue', value: 88 },
+    { label: 'Contenus pour les réseaux sociaux', value: 92 },
+    { label: 'Photographie événementielle', value: 82 },
+    { label: 'Storyboard & découpage', value: 80 },
+    { label: 'Motion design', value: 60 }
   ],
 
   // Les vrais logos s'affichent automatiquement pour ces logiciels
-  tools: ['DaVinci Resolve', 'After Effects', 'Premiere Pro', 'Photoshop', 'Lightroom', 'Canva'],
+  tools: ['DaVinci Resolve', 'After Effects', 'CapCut Pro', 'Photoshop', 'Lightroom', 'Illustrator', 'Canva'],
 
   gear: [
-    'Boîtier hybride plein format',
-    'Objectifs 24-70 mm f/2.8 et 50 mm f/1.8',
-    'Stabilisateur 3 axes',
-    'Drone compact',
-    'Micros-cravates sans fil',
-    'Kit d\'éclairage LED'
+    'Boîtier hybride Canon et objectif RF série L',
+    'Stabilisateur DJI Ronin',
+    'Magic arm',
+    'Trépied'
   ],
 
   path: [
-    { year: '2026', title: 'Vidéaste freelance', text: 'Clips, aftermovies et films de marque pour des artistes et des entreprises locales.' },
-    { year: '2025', title: 'Stage en agence de communication', text: 'Tournage et montage de contenus pour les réseaux sociaux des clients.' },
-    { year: '2023', title: 'Formation audiovisuel & multimédia', text: 'Écriture, tournage, montage, étalonnage, photographie et graphisme.' }
+    { year: '2026', title: 'Stage — SUAPS, Université de Tours', text: 'Production de contenus audiovisuels pour les réseaux, participation à la conception des futurs contenus et création de la charte graphique 2026-2027.' },
+    { year: '2025', title: 'Vidéaste indépendant', text: 'Conception et montage de vidéos professionnelles et personnelles, création de contenus pour YouTube et les réseaux sociaux.' },
+    { year: '2024', title: 'BUT MMI — IUT de Blois', text: 'Métiers du Multimédia et de l\'Internet, parcours communication (3e année, 2024-2027). Projets vidéo : court-métrage, clip musical, vidéo commerciale.' },
+    { year: '2024', title: 'Baccalauréat — École BIRD (AEFE), Madagascar', text: 'Baccalauréat général français, mention bien.' }
   ],
 
   /* STORYBOARDS (app Notes → dossier « Storyboards »)
      Mets tes images dans assets/storyboards/ puis :
-     - frames : une case par plan → « image » = la case dessinée (ex. 'assets/storyboards/clip-01.jpg')
+     - frames : une case par plan → « image » = la case (ex. 'assets/storyboards/clip-01.jpg')
                 Sans image, une esquisse au crayon est dessinée automatiquement.
-     - pages  : (optionnel) planches entières scannées, affichées en grand
-                ex. pages: ['assets/storyboards/clip-planche1.jpg', 'assets/storyboards/clip-planche2.jpg']
+     - pages  : (optionnel) planches entières, affichées en grand
      project : (optionnel) id du projet lié, pour ouvrir la vidéo finale.        */
   storyboards: [
     {
-      id: 'sb-clip', title: 'Clip musical — Artiste local', project: 'clip', date: '2025', pages: [],
-      description: "Découpage écrit avec l'artiste avant le tournage de nuit. L'idée : une seule déambulation sous les néons, avec des ruptures de rythme sur les refrains.",
+      id: 'sb-clip', title: 'Clip SAE 302', project: 'clip-sae302', date: '2025',
+      pages: ['assets/storyboards/clip-sae302-planche.jpg'],
+      description: "Découpage du clip minute par minute : le groupe joue pendant qu'une jeune fille suit une silhouette jusque dans la forêt. Chaque plan précise le cadrage et le support caméra (DJI, magic arm, trépied, main).",
       frames: [
-        { image: '', shot: 'Plan 1', framing: 'Plan large', move: 'Fixe', duration: '4 s', text: "La rue déserte, mouillée. Les néons se reflètent au sol." },
-        { image: '', shot: 'Plan 2', framing: 'Plan moyen', move: 'Travelling avant', duration: '6 s', text: "L'artiste entre dans le champ et avance vers la caméra." },
-        { image: '', shot: 'Plan 3', framing: 'Gros plan', move: 'Stabilisateur', duration: '3 s', text: "Visage éclairé en rouge, premier couplet en playback." },
-        { image: '', shot: 'Plan 4', framing: 'Plan d\'ensemble', move: 'Drone, montée', duration: '5 s', text: "On s'élève au-dessus du carrefour sur le refrain." },
-        { image: '', shot: 'Plan 5', framing: 'Insert', move: 'Fixe', duration: '2 s', text: "Main qui frappe le rythme sur une vitre embuée." },
-        { image: '', shot: 'Plan 6', framing: 'Plan large', move: 'Travelling arrière', duration: '8 s', text: "L'artiste s'éloigne, les néons s'éteignent un par un." }
+        { image: 'assets/storyboards/clip-01.jpg', shot: '00:00', framing: 'Ouverture', move: 'iPhone sur magic arm', text: "Premier plan, lancement de la vidéo : le guitariste et le batteur entrent en scène." },
+        { image: 'assets/storyboards/clip-02.jpg', shot: '00:00', framing: 'Plan à 45°', move: 'DJI, travelling avant', text: "Dès que le batteur joue ses premières notes, la caméra avance petit à petit vers lui." },
+        { image: '', shot: '00:00', framing: 'Plan rapproché', move: 'Trépied à mi-hauteur', text: "La guitare au premier plan, la batterie en fond, puis le point bascule sur la batterie." },
+        { image: 'assets/storyboards/clip-04.jpg', shot: '00:00', framing: 'Top down shot', move: 'Trépied', text: "La batterie vue du dessus pendant ses breaks." },
+        { image: 'assets/storyboards/clip-05.jpg', shot: '00:31', framing: 'Top down shot', move: 'Trépied', text: "Le subconscient du protagoniste ouvre les yeux." },
+        { image: 'assets/storyboards/clip-06.jpg', shot: '00:31', framing: 'Plan large', move: 'DJI, travelling bas', text: "Il voit une silhouette passer devant la fenêtre, se lève et commence à errer dans la rue en la suivant." },
+        { image: 'assets/storyboards/clip-07.jpg', shot: '01:03', framing: 'Plan de groupe', move: 'DJI, travelling', text: "Le plan commence sur la violoniste ; quand le chanteur dit « Wander », la caméra passe sur lui." },
+        { image: '', shot: '01:24', framing: 'Travelling horizontal', move: 'Caméra à la main', text: "La petite fille arrive devant la forêt : la caméra part du mollet jusqu'à passer derrière elle, puis elle suit calmement la silhouette entre les arbres." },
+        { image: '', shot: '01:41', framing: 'Close-up, ralenti', move: 'Caméra à la main', text: "Ralentis sur les yeux, les mains, les pieds. Elle perd la trace de la silhouette, disparue derrière un arbre." },
+        { image: 'assets/storyboards/clip-10.jpg', shot: '02:10', framing: 'Profil', move: 'Magic arm puis trépied', text: "La violoniste à la magic arm, puis le chanteur de profil sur trépied." },
+        { image: 'assets/storyboards/clip-11.jpg', shot: '02:50', framing: 'Low shutter speed', move: 'Trépied tenu par le perso', text: "La protagoniste panique et s'énerve de ne plus retrouver la silhouette : plusieurs plans en low shutter speed et ralenti autour d'elle." },
+        { image: 'assets/storyboards/clip-12.jpg', shot: '03:05', framing: 'Superposition', move: 'Magic arm', text: "Plan du chanteur, puis superposition progressive du plan du bassiste." },
+        { image: 'assets/storyboards/clip-13.jpg', shot: '03:19', framing: 'Gros plan', move: 'Magic arm', text: "Le bassiste seul jusqu'à 3:33." },
+        { image: 'assets/storyboards/clip-14.jpg', shot: '03:33', framing: 'Superposition', move: 'Magic arm', text: "Le violoniste jusqu'à 3:49, puis un plan du batteur en superposition." },
+        { image: 'assets/storyboards/clip-15.jpg', shot: '04:03', framing: 'Close-up puis large', move: 'DJI puis main', text: "La petite au pied de l'arbre ; elle relève la tête, se retourne et commence à courir." },
+        { image: 'assets/storyboards/clip-16.jpg', shot: '04:35', framing: 'Face à face', move: 'DJI', text: "Elle arrive enfin à sa hauteur : ils sont face à face. Vers 4:50, la scène du câlin se superpose au groupe." },
+        { image: '', shot: '05:06', framing: 'Plan de fin', move: 'Plans rapprochés', text: "Fin sur le groupe et quelques plans rapprochés." }
       ]
     },
     {
-      id: 'sb-court', title: 'Court-métrage — « La dernière prise »', project: 'court-metrage', date: '2026', pages: [],
-      description: "Storyboard de la séquence d'ouverture, préparé pour le plan de tournage et partagé avec l'équipe image.",
+      id: 'sb-basket', title: 'Storyboard Basket', project: 'basket', date: '2025',
+      pages: ['assets/storyboards/basket-planche.jpg'],
+      description: "18 plans pour un film de basket autour de Yanis : arrivée sur le terrain, échauffement, crossover, dunk et tir à trois points, avec les images de référence de chaque plan.",
       frames: [
-        { image: '', shot: 'Plan 1', framing: 'Plan large', move: 'Panoramique', duration: '5 s', text: "Le plateau vide, une seule lumière allumée." },
-        { image: '', shot: 'Plan 2', framing: 'Plan rapproché', move: 'Fixe', duration: '4 s', text: "La réalisatrice relit ses notes, hésite." },
-        { image: '', shot: 'Plan 3', framing: 'Contrechamp', move: 'Épaule', duration: '3 s', text: "Le comédien attend, face caméra." },
-        { image: '', shot: 'Plan 4', framing: 'Très gros plan', move: 'Fixe', duration: '2 s', text: "Le clap : « Dernière prise »." }
+        { image: 'assets/storyboards/basket-01.jpg', shot: 'Plan 1', framing: 'Plan de dos', move: 'Mouvement gauche → droite', text: "Yanis arrive sur le terrain, la balle dans les mains." },
+        { image: 'assets/storyboards/basket-02.jpg', shot: 'Plan 2', framing: 'Plan de face', move: 'Mouvement vers la gauche', text: "Yanis s'avance vers le terrain ; la caméra glisse pour se retrouver face à lui." },
+        { image: 'assets/storyboards/basket-03.jpg', shot: 'Plan 3', framing: 'Insert', move: 'Tilt up', text: "Il attache ses lacets ; le plan monte des lacets jusqu'à sa tête, qui regarde vers le bas." },
+        { image: 'assets/storyboards/basket-04.jpg', shot: 'Plan 4', framing: 'Contre-plongée', move: 'Rapide', text: "Le cerceau filmé d'en bas, en vitesse." },
+        { image: 'assets/storyboards/basket-05.jpg', shot: 'Plan 5', framing: 'Middle shot', move: 'Fixe', text: "Échauffement : Yanis enchaîne les dribbles." },
+        { image: 'assets/storyboards/basket-06.jpg', shot: 'Plans 6-7', framing: 'Low shutter speed', move: 'Face caméra', text: "Yanis attaque vers moi ; la vitesse d'obturation lente accentue le dribble." },
+        { image: 'assets/storyboards/basket-07.jpg', shot: 'Plan 7', framing: 'Close-up', move: 'Très rapide', text: "Rotation de son pied, puis enchaînement sur moi qui tombe : effet crossover." },
+        { image: 'assets/storyboards/basket-08.jpg', shot: 'Plans 8-9', framing: 'POV au sol', move: 'Puis plan large', text: "Yanis part au lay-up, vu de derrière depuis le sol, puis de loin, en dehors du terrain, quand il marque." },
+        { image: 'assets/storyboards/basket-09.jpg', shot: 'Plan 9', framing: 'Plan smartphone', move: 'À la main', text: "Quelqu'un filme le moment qui vient de se passer pendant que Yanis va au lay-up." },
+        { image: 'assets/storyboards/basket-10.jpg', shot: 'Plans 10-11', framing: 'Plan rapproché', move: 'Fixe', text: "Yanis lance la balle pour dunker ; gros plan sur ses pieds qui décollent." },
+        { image: 'assets/storyboards/basket-12.jpg', shot: 'Plan 12', framing: 'Contre-plongée', move: 'Fixe', text: "Le dunk filmé d'en bas pour montrer la hauteur, en couleur puis en noir et blanc." },
+        { image: 'assets/storyboards/basket-13.jpg', shot: 'Plan 13', framing: 'Insert', move: 'Fixe', text: "La balle qui rebondit." },
+        { image: 'assets/storyboards/basket-14.jpg', shot: 'Plan 14', framing: 'Insert', move: 'Fixe', text: "Il ramasse la balle au sol et se l'envoie à lui-même." },
+        { image: 'assets/storyboards/basket-15.jpg', shot: 'Plans 15-17', framing: 'Plan large de dos', move: 'Fixe', text: "Tir à trois points, filmé de derrière ; deuxième plan : la balle passe au-dessus de la caméra avec une traînée." },
+        { image: 'assets/storyboards/basket-17.jpg', shot: 'Plan 17', framing: 'Contre-plongée', move: 'Fixe', text: "La balle rentre dans le cerceau, vue d'en bas." },
+        { image: 'assets/storyboards/basket-18.jpg', shot: 'Plan 18', framing: 'Plan subjectif', move: 'Transition', text: "Il range sa balle dans son sac… et transition." }
       ]
     }
   ],
 
+  /* PROJETS — les champs vides (vidéo, timeline, photos…) seront remplis avec tes fichiers. */
   projects: [
-    { id: 'aftermovie', title: 'Aftermovie — Festival d\'été', short: 'Aftermovie', category: 'pro', type: 'video',
-      client: 'Festival (exemple)', year: '2026', role: 'Captation, montage, étalonnage', duration: '2:48',
-      description: "Trois jours de tournage en immersion pour raconter l'énergie du festival : scènes, public, coulisses. Montage rythmé calé sur la musique et étalonnage chaud pour garder l'ambiance des fins de journée.",
-      tags: ['Événementiel', 'Aftermovie', '4K'], tools: ['DaVinci Resolve', 'After Effects'], fav: true,
-      video: '', timeline: '', cover: '', colors: ['#ff7a3d', '#c2185b'] },
+    { id: 'clip-sae302', title: 'Clip musical — SAE 302', short: 'Clip SAE 302', category: 'scolaire', type: 'video',
+      client: 'BUT MMI — IUT de Blois', year: '2025', role: 'Tournage, montage', duration: '5:27',
+      description: "Clip réalisé en équipe dans le cadre de la SAE 302 : pendant que le groupe joue, une jeune fille suit une silhouette jusque dans la forêt. Tournage au stabilisateur DJI, à la magic arm et sur trépied, avec des ralentis et des plans en low shutter speed.",
+      tags: ['Clip', 'Musique', 'Projet d\'équipe'], tools: ['DaVinci Resolve'], fav: true,
+      video: '', timeline: '', colors: ['#3a1c71', '#d76d77'] },
 
-    { id: 'clip', title: 'Clip musical — Artiste local', short: 'Clip', category: 'pro', type: 'video',
-      client: 'Artiste (exemple)', year: '2025', role: 'Réalisation, cadrage, montage', duration: '3:32',
-      description: "Clip tourné en une nuit dans les rues de la ville, éclairé presque uniquement aux néons. Découpage écrit avec l'artiste, tournage au stabilisateur et montage au rythme du morceau.",
-      tags: ['Clip', 'Musique', 'Nuit'], tools: ['DaVinci Resolve'], fav: true,
-      video: '', timeline: '', cover: '', colors: ['#7b2ff7', '#00d4ff'] },
+    { id: 'basket', title: 'Film basket — Yanis', short: 'Basket', category: 'scolaire', type: 'video',
+      client: 'Projet vidéo sportif', year: '2025', role: 'Storyboard, tournage, montage', duration: '',
+      description: "Un film sportif autour de Yanis sur un terrain de basket : arrivée sur le terrain, échauffement, crossover filmé en low shutter speed, dunk en contre-plongée et tir à trois points. Découpage de 18 plans préparé en storyboard.",
+      tags: ['Sport', 'Basket', 'Storyboard'], tools: ['DaVinci Resolve', 'After Effects'], fav: true,
+      video: '', timeline: '', colors: ['#f7971e', '#c0392b'] },
 
-    { id: 'film-marque', title: 'Film de marque — Restaurant', short: 'Film de marque', category: 'pro', type: 'video',
-      client: 'Restaurant (exemple)', year: '2025', role: 'Tournage, montage, sound design', duration: '1:15',
-      description: "Un format court pour les réseaux sociaux : la cuisine, les produits et l'équipe. Plans macro, lumière naturelle et déclinaisons verticales 9:16 pour Instagram.",
-      tags: ['Publicité', 'Food', 'Réseaux sociaux'], tools: ['DaVinci Resolve', 'Canva'],
-      video: '', timeline: '', cover: '', colors: ['#f7b733', '#fc4a1a'] },
+    { id: 'mariage', title: 'Mariage', short: 'Mariage', category: 'pro', type: 'photo',
+      client: 'Particuliers', year: '2025', role: 'Photographie, retouche', duration: '',
+      description: "Couverture d'un mariage : les préparatifs, les invités et les moments forts de la journée, puis tri et retouche de la série dans Lightroom.",
+      tags: ['Mariage', 'Événementiel'], tools: ['Lightroom'], fav: true,
+      cover: '', gallery: [], before: '', colors: ['#c79081', '#dfa579'] },
 
-    { id: 'teaser', title: 'Teaser de lancement — Application', short: 'Teaser', category: 'pro', type: 'motion',
-      client: 'Start-up (exemple)', year: '2026', role: 'Motion design, typographie animée', duration: '0:45',
-      description: "Animation de 45 secondes pour annoncer le lancement d'une application : typographie cinétique, transitions fluides et mise en avant des fonctionnalités clés.",
-      tags: ['Motion design', 'Typographie', 'Lancement'], tools: ['After Effects'],
+    { id: 'suaps', title: 'Contenus réseaux — SUAPS', short: 'SUAPS', category: 'pro', type: 'video',
+      client: 'SUAPS — Université de Tours', year: '2026', role: 'Stage : tournage, montage', duration: '',
+      description: "Pendant mon stage de 2e année au service des sports de l'Université de Tours : production de contenus audiovisuels pour les réseaux sociaux et participation à la conception des futurs contenus.",
+      tags: ['Stage', 'Sport', 'Réseaux sociaux'], tools: ['DaVinci Resolve', 'CapCut Pro'], fav: true,
       video: '', timeline: '', cover: '', colors: ['#00c6ff', '#0050d0'] },
 
-    { id: 'sneakers', title: 'Shooting produit — Sneakers', short: 'Sneakers', category: 'pro', type: 'photo',
-      client: 'Boutique (exemple)', year: '2025', role: 'Photographie, retouche', duration: '24 photos',
-      description: "Série de photos produit en studio pour une boutique en ligne : fond coloré, lumière dure, détails matière. Retouche et harmonisation des couleurs sur toute la série.",
-      tags: ['Produit', 'Studio', 'E-commerce'], tools: ['Lightroom', 'Photoshop'],
-      cover: '', gallery: [], before: '', colors: ['#ff5f6d', '#ffc371'] },
+    { id: 'charte-suaps', title: 'Charte graphique SUAPS 2026-2027', short: 'Charte SUAPS', category: 'pro', type: 'design', format: 'post',
+      client: 'SUAPS — Université de Tours', year: '2026', role: 'Graphisme', duration: '',
+      description: "Création de la charte graphique du SUAPS pour l'année 2026-2027 : couleurs, typographies et gabarits pour les réseaux.",
+      tags: ['Charte graphique', 'Réseaux sociaux'], tools: ['Canva', 'Photoshop'],
+      cover: '', gallery: [], colors: ['#11998e', '#38ef7d'] },
 
-    { id: 'miniatures', title: 'Miniatures YouTube', short: 'Miniatures', category: 'pro', type: 'design', format: 'miniature',
-      client: 'Créateur de contenu (exemple)', year: '2026', role: 'Graphisme', duration: '20 visuels',
-      description: "Création d'une ligne graphique de miniatures pour une chaîne YouTube : typographie forte, détourages et couleurs saturées pour ressortir dans le fil.",
-      tags: ['YouTube', 'Miniatures'], tools: ['Canva', 'Photoshop'],
-      cover: '', gallery: [], colors: ['#f12711', '#f5af19'] },
-
-    { id: 'kit-reseaux', title: 'Kit réseaux sociaux', short: 'Posts', category: 'pro', type: 'design', format: 'post',
-      client: 'Restaurant (exemple)', year: '2025', role: 'Graphisme, déclinaisons', duration: '12 visuels',
-      description: "Gabarits de posts et de stories pour accompagner le film de marque : menus, annonces d'événements et visuels saisonniers.",
-      tags: ['Instagram', 'Gabarits'], tools: ['Canva'],
-      cover: '', gallery: [], colors: ['#ee0979', '#ff6a00'] },
-
-    { id: 'court-metrage', title: 'Court-métrage — « La dernière prise »', short: 'Court-métrage', category: 'scolaire', type: 'video',
-      client: 'Projet de fin d\'année', year: '2026', role: 'Réalisation, montage', duration: '8:20',
-      description: "Court-métrage de fiction écrit et tourné en équipe de cinq. Gestion du plan de tournage, réalisation sur deux jours puis montage, mixage et étalonnage.",
-      tags: ['Fiction', 'Court-métrage', 'Équipe'], tools: ['DaVinci Resolve'], fav: true,
-      video: '', timeline: '', cover: '', colors: ['#2c3e50', '#c94b4b'] },
-
-    { id: 'reportage', title: 'Reportage — Portes ouvertes', short: 'Reportage', category: 'scolaire', type: 'video',
-      client: 'Établissement (exemple)', year: '2025', role: 'Interviews, tournage, montage', duration: '4:05',
-      description: "Reportage pour présenter la formation aux futurs étudiants : interviews, plans d'illustration et habillage graphique aux couleurs de l'école.",
-      tags: ['Reportage', 'Interview'], tools: ['DaVinci Resolve', 'After Effects'],
-      video: '', timeline: '', cover: '', colors: ['#11998e', '#38ef7d'] },
-
-    { id: 'generique', title: 'Générique animé — Festival étudiant', short: 'Générique', category: 'scolaire', type: 'motion',
-      client: 'Projet de cours', year: '2025', role: 'Motion design', duration: '0:30',
-      description: "Générique d'ouverture en motion design : formes géométriques, rythme calé sur la musique et révélation du titre.",
-      tags: ['Motion design', 'Générique'], tools: ['After Effects', 'Illustrator'],
+    { id: 'bde-mirage', title: 'Vidéos du BDE MMI Mirage', short: 'BDE Mirage', category: 'scolaire', type: 'video',
+      client: 'BDE MMI Mirage', year: '2025', role: 'Producteur de contenu vidéo', duration: '',
+      description: "Production des vidéos du BDE de la formation MMI : événements, soirées et contenus pour les réseaux.",
+      tags: ['Événementiel', 'Réseaux sociaux'], tools: ['DaVinci Resolve', 'CapCut Pro'],
       video: '', timeline: '', cover: '', colors: ['#8e2de2', '#ff3d9a'] },
 
-    { id: 'portraits', title: 'Série portraits — Studio', short: 'Portraits', category: 'scolaire', type: 'photo',
-      client: 'Projet de cours', year: '2025', role: 'Photographie, éclairage, retouche', duration: '12 photos',
-      description: "Série de portraits en studio autour de l'éclairage : Rembrandt, papillon, contre-jour. Retouche de peau et étalonnage cohérent sur toute la série.",
-      tags: ['Portrait', 'Studio', 'Lumière'], tools: ['Lightroom', 'Photoshop'], fav: true,
-      cover: '', gallery: [], before: '', colors: ['#3a1c71', '#ffaf7b'] },
+    { id: 'court-metrage', title: 'Court-métrage — BUT MMI', short: 'Court-métrage', category: 'scolaire', type: 'video',
+      client: 'BUT MMI — IUT de Blois', year: '2025', role: 'Tournage, montage', duration: '',
+      description: "Court-métrage réalisé en équipe dans le cadre du BUT MMI.",
+      tags: ['Fiction', 'Court-métrage'], tools: ['DaVinci Resolve'],
+      video: '', timeline: '', cover: '', colors: ['#2c3e50', '#c94b4b'] },
 
-    { id: 'carnet-urbain', title: 'Photo de rue — Carnet urbain', short: 'Carnet urbain', category: 'scolaire', type: 'photo',
-      client: 'Projet personnel', year: '2024', role: 'Photographie', duration: '30 photos',
-      description: "Une année de photo de rue : lignes, reflets et silhouettes. Sélection et développement en noir et blanc et en couleurs douces.",
-      tags: ['Street', 'Urbain'], tools: ['Lightroom'],
-      cover: '', gallery: [], before: '', colors: ['#1f4037', '#99f2c8'] },
+    { id: 'video-commerciale', title: 'Vidéo commerciale — BUT MMI', short: 'Vidéo commerciale', category: 'scolaire', type: 'video',
+      client: 'BUT MMI — IUT de Blois', year: '2025', role: 'Tournage, montage', duration: '',
+      description: "Vidéo commerciale réalisée dans le cadre du BUT MMI.",
+      tags: ['Publicité', 'Marque'], tools: ['DaVinci Resolve', 'After Effects'],
+      video: '', timeline: '', cover: '', colors: ['#f7b733', '#fc4a1a'] },
 
-    { id: 'affiche', title: 'Affiche — Soirée courts-métrages', short: 'Affiche', category: 'scolaire', type: 'design', format: 'affiche',
-      client: 'Association étudiante', year: '2025', role: 'Graphisme', duration: 'A3',
-      description: "Affiche pour une soirée de projection de courts-métrages étudiants, déclinée en version réseaux sociaux.",
-      tags: ['Affiche', 'Événement'], tools: ['Photoshop', 'Canva'],
-      cover: '', gallery: [], colors: ['#141e30', '#e94057'] }
+    { id: 'youtube', title: 'Ma chaîne YouTube', short: 'YouTube', category: 'pro', type: 'video',
+      client: 'Projet personnel', year: '2025', role: 'Conception, tournage, montage', duration: '',
+      description: "J'administre ma propre chaîne YouTube : de l'idée au montage, en passant par les miniatures.",
+      tags: ['YouTube', 'Création de contenu'], tools: ['DaVinci Resolve', 'Photoshop'],
+      video: '', timeline: '', cover: '', colors: ['#f12711', '#f5af19'] }
   ]
 };

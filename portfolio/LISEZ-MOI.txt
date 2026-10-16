@@ -3,9 +3,11 @@ PORTFOLIO macOS — mode d'emploi
 
 1. OUVRIR LE SITE
    - Double-clique sur index.html (tous les fichiers du dossier doivent rester ensemble).
-   - À l'arrivée, le visiteur voit ton MacBook posé sur un bureau (avec une caméra
-     et un storyboard). Il entre dans l'ordinateur en scrollant, en cliquant sur
-     le Mac, avec la touche Entrée ou le bouton « Entrer » en haut à droite.
+   - À l'arrivée, le visiteur voit une photo réaliste (rendu 3D) d'un MacBook posé
+     sur un bureau en bois, avec un appareil photo, un storyboard et une tasse.
+     L'écran du Mac affiche l'heure réelle. On entre dans l'ordinateur en scrollant,
+     en cliquant sur le Mac, avec la touche Entrée ou le bouton « Entrer ».
+     Les images sont dans assets/arrivee/ (une version ordinateur, une version téléphone).
    - Liens directs utiles à partager (ils sautent l'arrivée) :
        index.html#presentation   → ouvre directement ta présentation
        index.html#contact        → ouvre directement la page Contact
@@ -22,6 +24,7 @@ PORTFOLIO macOS — mode d'emploi
                 Lightroom, Photoshop, Canva, Mail, Contacts, Notes, Keynote)
    style.css / apps.css   l'apparence
    assets/      tes vidéos, captures de timeline, photos, storyboards, avatar, CV
+                (cv.pdf + cv-1.jpg, cv-2.jpg : les pages affichées dans l'aperçu du CV)
 
 3. CE QU'IL Y A EN HAUT DE L'ÉCRAN
    - « Présentation » : une présentation Keynote de toi, générée à partir de
@@ -68,13 +71,17 @@ PORTFOLIO macOS — mode d'emploi
      pages  : planches entières scannées (affichées en grand)
    Sans image, une esquisse au crayon est générée pour chaque case.
 
-7. RECEVOIR LES MESSAGES DIRECTEMENT
+7. RÉSEAUX SOCIAUX
+   config.js → socials : un réseau n'apparaît que si son lien (url) est rempli.
+       { network: 'instagram', handle: '@tonpseudo', url: 'https://instagram.com/tonpseudo' }
+
+8. RECEVOIR LES MESSAGES DIRECTEMENT
    Par défaut, le formulaire ouvre la messagerie du visiteur avec le message prêt.
    Pour recevoir les messages directement dans ta boîte mail sans qu'il ait à
    l'envoyer lui-même : crée un formulaire gratuit sur https://formspree.io
    et colle son adresse dans config.js → formEndpoint.
 
-8. TES PHOTOS DE TOURNAGE (« Coulisses »)
+9. TES PHOTOS DE TOURNAGE (« Coulisses »)
    Des photos de toi en train de travailler sont posées sur le bureau comme des
    polaroïds (on peut les déplacer) et rangées dans le dossier « Coulisses ».
    Mets-les dans assets/coulisses/ puis dans config.js → coulisses :
@@ -82,14 +89,14 @@ PORTFOLIO macOS — mode d'emploi
    Tant qu'une photo est vide, un emplacement « Photo à venir » s'affiche.
    6 photos maximum sont posées sur le bureau (toutes sont dans le dossier).
 
-9. GARDER LE SITE RAPIDE
+10. GARDER LE SITE RAPIDE
    - Vidéos : MP4 (H.264), 1080p max, compressées (HandBrake, préréglage
      « Fast 1080p30 »). Une capture de timeline vidéo peut être en 720p.
    - Images : JPG/WebP de 2000 px de large max (1200 px suffit pour les coulisses).
    - Le site n'utilise plus de flou ni d'animations lourdes derrière les
      fenêtres : il reste fluide même sur un ordinateur modeste.
 
-10. METTRE EN LIGNE (gratuit)
+11. METTRE EN LIGNE (gratuit)
    GitHub Pages, Netlify ou Vercel : dépose simplement le dossier « portfolio ».
    Netlify Drop (app.netlify.com/drop) : glisse le dossier dans la page.
 

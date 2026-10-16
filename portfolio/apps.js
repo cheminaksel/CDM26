@@ -1429,7 +1429,7 @@ function wireContactForm(root, { onSent } = {}) {
     root.classList.remove('sending'); root.classList.add('sent');
     MAIL_SENT.unshift({ ...d, date: new Date(), how });
     if (how === 'sent') notify({ title: 'Message envoyé', body: `Merci ! ${firstName()} vous répondra très vite.`, ic: 'mail', app: 'Mail' });
-    else notify({ title: 'Message prêt à partir', body: 'Votre messagerie s\'est ouverte avec le message. Il ne reste qu\'à cliquer sur Envoyer.', ic: 'mail', app: 'Mail', time: 7000 });
+    else notify({ title: 'Message prêt à partir', body: `Votre messagerie devrait s'ouvrir avec le message prêt : il ne reste qu'à cliquer sur Envoyer. Sinon, écrivez-moi à ${CONFIG.email}.`, ic: 'mail', app: 'Mail', time: 7000 });
     refreshMail();
     if (onSent) onSent(d, how);
     setTimeout(() => { root.classList.remove('sent'); $$('[data-send]', root).forEach(b => { b.disabled = false; }); if (how === 'sent') { f('message').value = ''; } }, 2600);
@@ -1504,7 +1504,7 @@ function inboxMessages() {
       body: `<p>Bonjour,</p><p>Merci de passer sur mon portfolio ! Je suis ${esc(CONFIG.role.toLowerCase())}, basé à ${esc(CONFIG.city)}.</p><p>Pour découvrir qui je suis, ouvre la ${pres} (en haut de l'écran). Mes projets sont dans le Finder et sur le bureau, et mes storyboards dans Notes.</p><p><b>Pour me contacter</b>, clique sur « Répondre » ou sur le bouton ci-dessous : ton message m'arrivera directement.</p><p>À très vite,<br>${esc(firstName())}</p>`,
       cta: [['reply', 'Écrire à ' + firstName()], ['pres', 'Voir la présentation']] },
     { id: 'm2', subject: `${REEL.title} — à voir en premier`, time: 'Hier',
-      prev: `Une minute et demie pour voir mon univers : clips, aftermovies, films de marque…`,
+      prev: `Mes meilleurs plans en un seul montage : clips, événements, sport, réseaux sociaux…`,
       body: `<p>Si tu n'as qu'une minute, commence par mon showreel : une sélection de mes meilleurs plans, montés et étalonnés sur DaVinci Resolve.</p><p>Il s'ouvre directement dans le logiciel, avec la timeline du montage.</p>`,
       cta: [['reel', 'Lire le showreel'], ['reply', 'Répondre']] },
     { id: 'm3', subject: 'Mes disponibilités', time: 'Lundi',
@@ -1587,7 +1587,7 @@ function renderMail(rec) {
   const view = $('.ml-msg', body);
   if (!m) { view.innerHTML = `<div class="ml-none">Aucun message sélectionné</div>`; return; }
   const head = (who, to) => `<div class="ml-mh"><span class="ml-av">${who === 'me' ? avatarHTML() : `<span>${esc((m.sent.name || '?').slice(0, 1).toUpperCase())}</span>`}</span><div class="ml-mhi"><b>${esc(who === 'me' ? CONFIG.name : (m.sent.name || 'Moi'))}</b><small>À : ${esc(to)}</small><h2>${esc(m.subject)}</h2></div><span class="ml-mt">${esc(m.time)}</span></div>`;
-  if (m.sent) view.innerHTML = `${head('them', `${CONFIG.name} <${CONFIG.email}>`)}<div class="ml-body"><p>${esc(m.sent.message).replace(/\n/g, '<br>')}</p><p class="ml-note">${m.sent.how === 'sent' ? '✓ Envoyé' : '✓ Ouvert dans votre messagerie'}</p></div>`;
+  if (m.sent) view.innerHTML = `${head('them', `${CONFIG.name} <${CONFIG.email}>`)}<div class="ml-body"><p>${esc(m.sent.message).replace(/\n/g, '<br>')}</p><p class="ml-note">${m.sent.how === 'sent' ? '✓ Envoyé' : 'Préparé dans votre messagerie'}</p></div>`;
   else view.innerHTML = `${head('me', 'vous')}<div class="ml-body">${m.body}<div class="ml-ctas">${m.cta.map(([k, l], i) => `<button class="btn ${i === 0 ? 'primary' : ''}" data-m="${k}">${k === 'reply' ? G.reply : ''}${esc(l)}</button>`).join('')}</div>
       <div class="ml-sig"><span class="ml-av sm">${avatarHTML()}</span><div><b>${esc(CONFIG.name)}</b><small>${esc(CONFIG.role)} · ${esc(CONFIG.city)}</small><small>${esc(CONFIG.email)}</small></div></div></div>`;
 }
@@ -1698,7 +1698,7 @@ function renderNotes(rec) {
   });
 }
 function noteHTML(id) {
-  if (id === 'bio') return `<div class="n-hero"><span class="n-av">${avatarHTML()}</span><div><h1>${esc(CONFIG.name)}</h1><p>${esc(CONFIG.role)} · ${esc(CONFIG.city)}</p></div></div>${CONFIG.bio.map(t => `<p>${esc(t)}</p>`).join('')}<h3>Logiciels</h3><div class="n-tools">${CONFIG.tools.map(t => `<span><i>${toolLogo(t)}</i>${esc(t)}</span>`).join('')}</div>`;
+  if (id === 'bio') return `<div class="n-hero"><span class="n-av">${avatarHTML()}</span><div><h1>${esc(CONFIG.name)}</h1><p>${esc(CONFIG.role)} · ${esc(CONFIG.city)}</p></div></div>${CONFIG.bio.map(t => `<p>${esc(t)}</p>`).join('')}<h3>Logiciels</h3><div class="n-tools">${CONFIG.tools.map(t => `<span><i>${toolLogo(t)}</i>${esc(t)}</span>`).join('')}</div>${asList(CONFIG.languages).length ? `<h3>Langues</h3><ul class="n-list">${asList(CONFIG.languages).map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}${asList(CONFIG.interests).length ? `<h3>Centres d'intérêt</h3><ul class="n-list">${asList(CONFIG.interests).map(l => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}`;
   if (id === 'skills') return `<h1>Compétences</h1><p class="n-muted">Ce que je fais au quotidien, du storyboard à l'export.</p><div class="sk-list">${CONFIG.skills.map((s, i) => `<div class="sk"><span>${esc(s.label)}</span><b class="mono" data-v="${s.value}">0 %</b><div class="sk-bar"><i style="--w:${s.value}%;animation-delay:${i * 80}ms"></i></div></div>`).join('')}</div>`;
   if (id === 'path') return `<h1>Parcours</h1><div class="n-tl">${CONFIG.path.map(p => `<div class="n-step"><span class="mono">${esc(p.year)}</span><div><b>${esc(p.title)}</b><p>${esc(p.text)}</p></div></div>`).join('')}</div>`;
   return `<h1>Matériel</h1><ul class="n-check">${CONFIG.gear.map(g => `<li><i>${G.check}</i>${esc(g)}</li>`).join('')}</ul>`;
@@ -1965,8 +1965,8 @@ function openAbout(from) {
 function openCV(from) {
   WM.open('cv', { app: 'finder', kind: 'cv', title: 'CV.pdf', w: 700, h: 760, cls: 'win-preview', from, build: body => {
     body.innerHTML = `<div class="pv">
-      <div class="pv-bar"><span class="mono">Page 1 sur 1</span><span class="pv-sp"></span>${CONFIG.cv ? `<a class="btn sm primary" href="${esc(CONFIG.cv)}" download>${G.download} Télécharger le PDF</a>` : `<button class="btn sm" data-print>${G.download} Imprimer / PDF</button>`}</div>
-      <div class="pv-scroll"><div class="pv-page">
+      <div class="pv-bar"><span class="mono">Page 1 sur ${Math.max(1, asList(CONFIG.cvPages).length)}</span><span class="pv-sp"></span>${CONFIG.cv ? `<a class="btn sm primary" href="${esc(CONFIG.cv)}" download>${G.download} Télécharger le PDF</a>` : `<button class="btn sm" data-print>${G.download} Imprimer / PDF</button>`}</div>
+      <div class="pv-scroll">${asList(CONFIG.cvPages).length ? asList(CONFIG.cvPages).map((src, i) => `<img class="pv-img" src="${esc(src)}" alt="CV de ${esc(CONFIG.name)} — page ${i + 1}">`).join('') + '</div></div>' : `<div class="pv-page">
         <header class="cv-h"><div><h1>${esc(CONFIG.name)}</h1><p>${esc(CONFIG.role)}</p></div><div class="cv-c"><span>${esc(CONFIG.email)}</span>${CONFIG.phone ? `<span>${esc(CONFIG.phone)}</span>` : ''}<span>${esc(CONFIG.city)}</span>${CONFIG.socials.slice(0, 2).map(s => `<span>${esc((SOCIAL[s.network] || {}).label || s.network)} : ${esc(s.handle)}</span>`).join('')}</div></header>
         <section><h4>Profil</h4><p>${esc(CONFIG.bio[0])} ${esc(CONFIG.bio[1] || '')}</p></section>
         <section><h4>Expériences & formation</h4>${CONFIG.path.map(p => `<div class="cv-x"><span>${esc(p.year)}</span><div><b>${esc(p.title)}</b><p>${esc(p.text)}</p></div></div>`).join('')}</section>
@@ -1975,8 +1975,10 @@ function openCV(from) {
           <section><h4>Logiciels</h4><div class="cv-tools">${CONFIG.tools.map(t => `<span><i>${toolLogo(t)}</i>${esc(t)}</span>`).join('')}</div><h4>Matériel</h4><ul>${CONFIG.gear.slice(0, 4).map(g => `<li>${esc(g)}</li>`).join('')}</ul></section>
         </div>
         <section><h4>Projets marquants</h4><ul class="cv-pj">${CONFIG.projects.filter(p => p.fav).map(p => `<li><b>${esc(p.title)}</b> — ${esc(p.client)}, ${esc(p.year)}</li>`).join('')}</ul></section>
-      </div></div></div>`;
+      </div></div></div>`}`;
     const pr = $('[data-print]', body); if (pr) pr.addEventListener('click', () => window.print());
+    const imgs = $$('.pv-img', body), sc = $('.pv-scroll', body);
+    if (imgs.length > 1) sc.addEventListener('scroll', () => { const k = imgs.findIndex(im => im.offsetTop + im.offsetHeight / 2 > sc.scrollTop + 40); $('.pv-bar .mono', body).textContent = `Page ${(k < 0 ? imgs.length - 1 : k) + 1} sur ${imgs.length}`; }, { passive: true });
   } });
 }
 function openTrash(from) {
