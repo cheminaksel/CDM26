@@ -17,7 +17,7 @@
                 Sert à placer la tête de lecture rouge au bon endroit. Ex. [0.12, 0.96]
    - app      : logiciel qui ouvre le projet : 'resolve', 'ae', 'lr', 'ps' ou 'canva'
                 (par défaut : vidéo → DaVinci, motion → After Effects,
-                 photo → Lightroom Classic, affiche → Photoshop,
+                 photo → Lightroom, affiche → Photoshop,
                  miniature / post / story → Canva).
    - cover    : image de couverture. Sans image, une affiche colorée est générée.
    - gallery  : liste d'images (photos, ou pages d'un design).
@@ -63,6 +63,17 @@ const CONFIG = {
     "Basé en France, je me déplace pour les tournages et je suis ouvert aux collaborations, missions freelance et projets en équipe."
   ],
 
+  /* PHOTOS DE TOI AU TRAVAIL (posées sur le bureau + dossier « Coulisses »)
+     Mets tes photos dans assets/coulisses/ puis indique-les dans « photo ».
+     Tant que « photo » est vide, un emplacement « Photo à venir » s'affiche.
+     Tu peux en mettre autant que tu veux (6 maximum sont posées sur le bureau). */
+  coulisses: [
+    { photo: '', caption: 'En tournage' },
+    { photo: '', caption: 'Au montage' },
+    { photo: '', caption: 'Shooting en studio' },
+    { photo: '', caption: 'Repérages' }
+  ],
+
   /* PRÉSENTATION (menu « Présentation » en haut de l'écran)
      Les diapositives sont générées à partir de tout le contenu de ce fichier. */
   presentation: {
@@ -87,7 +98,7 @@ const CONFIG = {
   ],
 
   // Les vrais logos s'affichent automatiquement pour ces logiciels
-  tools: ['DaVinci Resolve', 'After Effects', 'Premiere Pro', 'Photoshop', 'Lightroom Classic', 'Canva'],
+  tools: ['DaVinci Resolve', 'After Effects', 'Premiere Pro', 'Photoshop', 'Lightroom', 'Canva'],
 
   gear: [
     'Boîtier hybride plein format',
@@ -164,7 +175,7 @@ const CONFIG = {
     { id: 'sneakers', title: 'Shooting produit — Sneakers', short: 'Sneakers', category: 'pro', type: 'photo',
       client: 'Boutique (exemple)', year: '2025', role: 'Photographie, retouche', duration: '24 photos',
       description: "Série de photos produit en studio pour une boutique en ligne : fond coloré, lumière dure, détails matière. Retouche et harmonisation des couleurs sur toute la série.",
-      tags: ['Produit', 'Studio', 'E-commerce'], tools: ['Lightroom Classic', 'Photoshop'],
+      tags: ['Produit', 'Studio', 'E-commerce'], tools: ['Lightroom', 'Photoshop'],
       cover: '', gallery: [], before: '', colors: ['#ff5f6d', '#ffc371'] },
 
     { id: 'miniatures', title: 'Miniatures YouTube', short: 'Miniatures', category: 'pro', type: 'design', format: 'miniature',
@@ -200,13 +211,13 @@ const CONFIG = {
     { id: 'portraits', title: 'Série portraits — Studio', short: 'Portraits', category: 'scolaire', type: 'photo',
       client: 'Projet de cours', year: '2025', role: 'Photographie, éclairage, retouche', duration: '12 photos',
       description: "Série de portraits en studio autour de l'éclairage : Rembrandt, papillon, contre-jour. Retouche de peau et étalonnage cohérent sur toute la série.",
-      tags: ['Portrait', 'Studio', 'Lumière'], tools: ['Lightroom Classic', 'Photoshop'], fav: true,
+      tags: ['Portrait', 'Studio', 'Lumière'], tools: ['Lightroom', 'Photoshop'], fav: true,
       cover: '', gallery: [], before: '', colors: ['#3a1c71', '#ffaf7b'] },
 
     { id: 'carnet-urbain', title: 'Photo de rue — Carnet urbain', short: 'Carnet urbain', category: 'scolaire', type: 'photo',
       client: 'Projet personnel', year: '2024', role: 'Photographie', duration: '30 photos',
       description: "Une année de photo de rue : lignes, reflets et silhouettes. Sélection et développement en noir et blanc et en couleurs douces.",
-      tags: ['Street', 'Urbain'], tools: ['Lightroom Classic'],
+      tags: ['Street', 'Urbain'], tools: ['Lightroom'],
       cover: '', gallery: [], before: '', colors: ['#1f4037', '#99f2c8'] },
 
     { id: 'affiche', title: 'Affiche — Soirée courts-métrages', short: 'Affiche', category: 'scolaire', type: 'design', format: 'affiche',

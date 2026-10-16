@@ -131,7 +131,8 @@ const GLYPH_PATHS = {
   camera: '<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2L9 5h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/>',
   sparkle: '<path d="M12 3.5l1.8 5.2 5.2 1.8-5.2 1.8L12 17.5l-1.8-5.2L5 10.5l5.2-1.8z"/><path d="M18.5 16v4M16.5 18h4"/>',
   film: '<rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M7.5 5v14M16.5 5v14M3.5 9.5h4M3.5 14.5h4M16.5 9.5h4M16.5 14.5h4"/>',
-  pencil: '<path d="M4 20l1-4.5L15.5 5l3.5 3.5L8.5 19z"/><path d="M13.5 7l3.5 3.5"/>'
+  pencil: '<path d="M4 20l1-4.5L15.5 5l3.5 3.5L8.5 19z"/><path d="M13.5 7l3.5 3.5"/>',
+  clap: '<path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 10l-.6-3.7L18.7 4l.6 3.7z"/><path d="M8 5.4l2.2 3.5M13 4.7l2.2 3.5"/>'
 };
 const folderSvg = (u, glyph) => `<svg viewBox="0 0 64 64" aria-hidden="true"><defs>
   ${grad(u + 'b', [[0, '#5cb6f7'], [1, '#2f8de4']])}${grad(u + 'f', [[0, '#a9ddff'], [.14, '#7ec7fb'], [1, '#4aa7f2']])}</defs>
@@ -161,6 +162,7 @@ Object.assign(ICONS, {
   folderPhoto: u => folderSvg(u, GLYPH_PATHS.camera),
   folderMotion: u => folderSvg(u, GLYPH_PATHS.sparkle),
   folderStory: u => folderSvg(u, GLYPH_PATHS.pencil),
+  folderClap: u => folderSvg(u, GLYPH_PATHS.clap),
   mov: u => docSvg(u, 'mov'), txt: u => docSvg(u, 'txt'), pdf: u => docSvg(u, 'pdf'), vcf: u => docSvg(u, 'vcf'), key: u => docSvg(u, 'key')
 });
 const icon = name => (ICONS[name] || ICONS.folder)(uid());

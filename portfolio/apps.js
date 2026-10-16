@@ -832,31 +832,48 @@ function buildAE(body, rec, first) {
 }
 
 /* ==================================================================
-   LIGHTROOM CLASSIC — module Développement (photos)
+   LIGHTROOM (photos) — interface de l'application Lightroom
    ================================================================== */
 const LRI = {
-  crop: si('<path d="M6.5 2.5v14a1 1 0 0 0 1 1h14M2.5 6.5h14a1 1 0 0 1 1 1v14"/><path d="M10 14l7-7" stroke-dasharray="2 2"/>'),
-  heal: si('<rect x="3.5" y="9" width="17" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M11 11h2M12 10v2"/>'),
+  add: si('<path d="M12 5v14M5 12h14"/>', 2.2),
+  photos: si('<rect x="6.5" y="3.5" width="14" height="11" rx="1.5"/><path d="M3.5 7v11a1.5 1.5 0 0 0 1.5 1.5h12"/><path d="M8.5 12l3-3 2.5 2.5 2-1.5 3 2.5"/>'),
+  shared: si('<circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="10" r="2.4"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M14.5 15.2c.6-.3 1.3-.4 2-.4 2.2 0 3.8 1.4 4.2 4"/>'),
+  learn: si('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z"/>'),
+  edit: si('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'),
+  crop: si('<path d="M6.5 2.5v14a1 1 0 0 0 1 1h14M2.5 6.5h14a1 1 0 0 1 1 1v14"/>'),
+  remove: si('<path d="M4 15l8-9 8 8-6 6H8z"/><path d="M9 10l7 7"/>'),
+  mask: si('<circle cx="9.5" cy="12" r="6"/><circle cx="14.5" cy="12" r="6" stroke-dasharray="2.5 2"/>'),
+  blur: si('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" stroke-dasharray="2 2"/>'),
   redeye: si('<path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/>'),
-  mask: si('<circle cx="12" cy="12" r="8" stroke-dasharray="3 2.4"/><circle cx="12" cy="12" r="3.5"/>'),
-  coll: '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3.5" width="12" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.1"/><rect x="4" y="2" width="8" height="1.2" fill="currentColor"/></svg>',
+  presets: si('<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>'),
+  info: si('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.8v.2"/>'),
+  activity: si('<path d="M4.5 5.5h15v10h-9l-4.5 4v-4h-1.5z"/>'),
+  tag: si('<path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8" cy="8" r="1.3"/>'),
+  sidebar: si('<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9.5 4.5v15"/>'),
+  filter: si('<path d="M4 6h16M7 12h10M10 18h4"/>'),
+  cloud: si('<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/><path d="M9.5 13.5l2 2 3.5-3.5"/>'),
+  help: si('<circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7M12 17v.2"/>'),
+  gridP: si('<rect x="3.5" y="5" width="7" height="6" rx="1"/><rect x="13.5" y="5" width="7" height="6" rx="1"/><rect x="3.5" y="13" width="7" height="6" rx="1"/><rect x="13.5" y="13" width="7" height="6" rx="1"/>'),
+  gridS: si('<rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/>'),
+  single: si('<rect x="4" y="5" width="16" height="11" rx="1"/><path d="M6 19.5h2M11 19.5h2M16 19.5h2"/>'),
+  ba: si('<rect x="3.5" y="5" width="17" height="14" rx="1.5"/><path d="M12 5v14"/><path d="M12 5h8.5v14H12z" fill="currentColor" fill-opacity=".35"/>'),
+  flag: si('<path d="M6 20V4.5h10l-2 4 2 4H6"/>'),
+  star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l2.4 5 5.4.6-4 3.7 1.1 5.3L12 15.9l-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="currentColor"/></svg>',
   drop: si('<path d="M5 19l1-4 8.5-8.5 3 3L9 18z"/><path d="M15 4.5l4.5 4.5"/>'),
-  grid: si('<rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/>'),
-  loupe: si('<rect x="4" y="5" width="16" height="14" rx="1"/>'),
-  ba: '<svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="16.5" text-anchor="middle" font-family="-apple-system,Inter,sans-serif" font-weight="700" font-size="11" fill="currentColor">Y|Y</text></svg>'
+  eye: si('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>')
 };
 const LR_DEF = { temp: 0, tint: 0, exp: 0, con: 0, hi: 0, sh: 0, wh: 0, bl: 0, tex: 0, cla: 0, deh: 0, vib: 0, sat: 0, bw: false };
 const LR_GROUPS = [
-  ['Bal. blancs', [['temp', 'Temp.', -100, 100, 1, 'g-temp'], ['tint', 'Teinte', -100, 100, 1, 'g-tint']]],
-  ['Ton', [['exp', 'Exposition', -5, 5, 0.05, ''], ['con', 'Contraste', -100, 100, 1, ''], ['hi', 'Hautes lumières', -100, 100, 1, ''], ['sh', 'Ombres', -100, 100, 1, ''], ['wh', 'Blancs', -100, 100, 1, ''], ['bl', 'Noirs', -100, 100, 1, '']]],
-  ['Présence', [['tex', 'Texture', -100, 100, 1, ''], ['cla', 'Clarté', -100, 100, 1, ''], ['deh', 'Correction du voile', -100, 100, 1, ''], ['vib', 'Vibrance', -100, 100, 1, 'g-sat'], ['sat', 'Saturation', -100, 100, 1, 'g-sat']]]
+  ['Lumière', [['exp', 'Exposition', -5, 5, 0.05, ''], ['con', 'Contraste', -100, 100, 1, ''], ['hi', 'Hautes lumières', -100, 100, 1, ''], ['sh', 'Ombres', -100, 100, 1, ''], ['wh', 'Blancs', -100, 100, 1, ''], ['bl', 'Noirs', -100, 100, 1, '']], 'Courbe'],
+  ['Couleur', [['temp', 'Temp.', -100, 100, 1, 'g-temp'], ['tint', 'Teinte', -100, 100, 1, 'g-tint'], ['vib', 'Vibrance', -100, 100, 1, 'g-sat'], ['sat', 'Saturation', -100, 100, 1, 'g-sat']], 'Mélange'],
+  ['Effets', [['tex', 'Texture', -100, 100, 1, ''], ['cla', 'Clarté', -100, 100, 1, ''], ['deh', 'Correction du voile', -100, 100, 1, '']], '']
 ];
-const LR_LABEL = Object.fromEntries(LR_GROUPS.flatMap(g => g[1].map(s => [s[0], s[1]])));
 const LR_PRESETS = [
   ['Couleur', [['Couleur vive', { vib: 35, sat: 8, con: 18, cla: 10 }], ['Lumineux et doux', { exp: 0.3, con: -18, hi: -35, sh: 30, cla: -8 }]]],
   ['Créatif', [['Chaud', { temp: 32, tint: 6, vib: 12 }], ['Froid', { temp: -32, tint: -4, con: 10 }], ['Vintage', { temp: 18, con: -16, sat: -28, bl: 35, deh: -10 }], ['Cinéma', { temp: -10, con: 28, sh: -18, deh: 12, sat: -12 }]]],
   ['Noir et blanc', [['N&B contrasté', { bw: true, con: 42, cla: 22, bl: -20 }], ['N&B doux', { bw: true, con: -12, sh: 25 }]]]
 ];
+const LR_LABEL = Object.fromEntries(LR_GROUPS.flatMap(g => g[1].map(s => [s[0], s[1]])));
 const lrList = () => { const l = CONFIG.projects.filter(x => appFor(x) === 'lr'); return l.length ? l : CONFIG.projects.filter(x => x.type === 'photo'); };
 const lrImages = p => { const g = asList(p.gallery); return g.length ? g : p.cover ? [p.cover] : [null, null, null, null, null, null]; };
 const lrFmt = (k, v) => k === 'exp' ? (v > 0 ? '+' : '') + v.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : (v > 0 ? '+' : '') + v;
@@ -866,6 +883,7 @@ function lrFilter(a) {
   const sa = Math.max(0, (1 + a.sat / 100) * (1 + a.vib / 170) * (1 + a.deh / 500));
   return `brightness(${br.toFixed(3)}) contrast(${Math.max(0.2, ct).toFixed(3)}) saturate(${a.bw ? 0 : sa.toFixed(3)})`;
 }
+const lrTone = a => ({ warm: a.bw ? 0 : Math.abs(a.temp) / 170, warmC: a.temp >= 0 ? '#ff9b3d' : '#3d8bff', tint: a.bw ? 0 : Math.abs(a.tint) / 220, tintC: a.tint >= 0 ? '#ff3dc8' : '#3dff6b' });
 function lrHisto(seed, a) {
   const r = rng(seed); const ch = a.bw ? [['#bbbbbb', 0.48]] : [['#ff453a', 0.34], ['#30d158', 0.5], ['#0a84ff', 0.64]];
   const shift = a.exp * 0.07 + a.sh * 0.0008 + a.wh * 0.001, spread = 1 + a.con / 220 + a.cla / 500;
@@ -881,151 +899,197 @@ function openLR(p, from) {
   p = p || list[0];
   const ex = WM.list.get('app-lr');
   if (ex) { if (ex.minimized) WM.restore(ex.id); else WM.focus(ex.id); ex.state.load(p); return; }
-  WM.open('app-lr', { app: 'lr', kind: 'lr', title: 'Catalogue Lightroom.lrcat - Adobe Photoshop Lightroom Classic - Développement', w: 1260, h: 790, cls: 'win-dark win-pro win-lr', minW: 720, from, build: (body, rec) => buildLR(body, rec, p) });
+  WM.open('app-lr', { app: 'lr', kind: 'lr', title: 'Lightroom', w: 1260, h: 790, chrome: 'none', cls: 'win-dark win-pro win-lrn', minW: 720, from, build: (body, rec) => buildLR(body, rec, p) });
 }
 function buildLR(body, rec, first) {
   const list = lrList();
-  const slider = ([k, l, min, max, step, g]) => `<div class="lr-sl" data-k="${k}"><span class="lr-sll" title="Double-clic pour réinitialiser">${l}</span><input type="range" class="${g}" min="${min}" max="${max}" step="${step}" value="0" data-k="${k}" aria-label="${l}"><em class="mono" data-v="${k}">${lrFmt(k, 0)}</em></div>`;
-  body.innerHTML = `<div class="lr">
-    <header class="lr-top">
-      <div class="lr-id"><span class="lr-logo">${icon('lrc')}</span><span><small>Adobe</small><b>Lightroom Classic</b></span></div>
-      <nav class="lr-mods">${['Bibliothèque', 'Développement', 'Cartes', 'Livres', 'Diaporama', 'Impression', 'Web'].map((m, i) => `${i ? '<i>|</i>' : ''}<b class="${m === 'Développement' ? 'on' : ''}">${m}</b>`).join('')}</nav>
+  const slider = ([k, l, min, max, step, g]) => `<div class="ln-sl" data-k="${k}"><div class="ln-slh"><span class="ln-sll" title="Double-clic pour réinitialiser">${l}</span><input class="ln-val mono" data-v="${k}" value="${lrFmt(k, 0)}" readonly tabindex="-1" aria-hidden="true"></div><input type="range" class="${g}" min="${min}" max="${max}" step="${step}" value="0" data-k="${k}" aria-label="${l}"></div>`;
+  body.innerHTML = `<div class="lrn">
+    <header class="ln-top" data-drag>
+      <div class="tl-slot"></div>
+      <button class="ln-ib" data-a="side" aria-label="Afficher le panneau Mes photos">${LRI.sidebar}</button>
+      <div class="ln-title"><b class="ln-alb"></b><small class="ln-cnt"></small></div>
+      <label class="ln-search hide-s">${G.search}<input aria-label="Rechercher" placeholder="Rechercher"></label>
+      <button class="ln-ib hide-s" aria-label="Filtrer">${LRI.filter}</button>
+      <span class="ln-sp"></span>
+      <button class="ln-ib" data-a="share" aria-label="Partager">${G.share}</button>
+      <span class="ln-ib ln-sync" aria-label="Synchronisé">${LRI.cloud}</span>
+      <button class="ln-ib hide-s" aria-label="Aide">${LRI.help}</button>
+      <span class="ln-av">${avatarHTML()}</span>
     </header>
-    <div class="lr-main">
-      <aside class="lr-left">
-        <section class="lr-p"><h4>Navigation <span class="hide-s">ADAPTER&nbsp;&nbsp;REMPL.&nbsp;&nbsp;100%&nbsp;&nbsp;200%</span></h4><div class="lr-nav"></div></section>
-        <section class="lr-p"><h4>Paramètres prédéfinis <span>+</span></h4><div class="lr-presets">${LR_PRESETS.map(([g, items]) => `<div class="lr-pg">${G.down}${g}</div>${items.map(([n]) => `<button class="lr-pi" data-preset="${esc(n)}">${esc(n)}</button>`).join('')}`).join('')}</div></section>
-        <section class="lr-p"><h4>Historique <span>×</span></h4><div class="lr-hist"></div></section>
-        <section class="lr-p"><h4>Collections <span>+</span></h4><div class="lr-cols">${list.map(p => `<button class="lr-col" data-id="${p.id}">${LRI.coll}<span>${esc(p.short)}</span><em>${lrImages(p).length}</em></button>`).join('')}</div></section>
-        <section class="lr-p grow"><h4>Commentaires</h4><div class="lr-cmt"></div></section>
-        <div class="lr-lbtns"><button data-a="copy">Copier…</button><button data-a="paste">Coller</button></div>
+    <div class="ln-main">
+      <nav class="ln-rail">
+        <button class="ln-add" aria-label="Ajouter des photos">${LRI.add}</button>
+        <button class="ln-rb on" aria-label="Mes photos">${LRI.photos}</button>
+        <button class="ln-rb" aria-label="Partagées avec vous">${LRI.shared}</button>
+        <button class="ln-rb" aria-label="Apprendre">${LRI.learn}</button>
+      </nav>
+      <aside class="ln-side">
+        <div class="ln-sh">Mes photos</div>
+        <button class="ln-si">${LRI.photos}<span>Toutes les photos</span><em class="ln-all"></em></button>
+        <button class="ln-si">${G.clock}<span>Par date</span></button>
+        <button class="ln-si">${LRI.shared}<span>Personnes</span></button>
+        <button class="ln-si">${G.download}<span>Récemment ajoutées</span></button>
+        <div class="ln-sh">Albums <span>${G.plus}</span></div>
+        <div class="ln-albs">${list.map(p => `<button class="ln-al" data-id="${p.id}"><span class="ln-alth">${poster(p, { label: false })}</span><span class="ln-aln">${esc(p.short)}</span><em>${lrImages(p).length}</em></button>`).join('')}</div>
       </aside>
-      <section class="lr-center">
-        <div class="lr-stage">
-          <div class="lr-half lr-before"><div class="lr-img"></div><span class="lr-tag">Avant</span></div>
-          <div class="lr-half lr-after"><div class="lr-img"><div class="lr-pic"></div><i class="lr-warm"></i><i class="lr-tint"></i></div><span class="lr-tag">Après</span></div>
-          <div class="lr-info"><b class="lr-fn"></b><span class="lr-sub"></span></div>
+      <section class="ln-center">
+        <div class="ln-stage">
+          <div class="ln-half ln-before"><div class="ln-img"></div><span class="ln-tag">Avant</span></div>
+          <div class="ln-half ln-after"><div class="ln-img"><div class="ln-pic"></div><i class="ln-warm"></i><i class="ln-tint"></i></div><span class="ln-tag">Après</span></div>
         </div>
-        <div class="lr-toolbar"><button data-v="loupe" class="on" aria-label="Loupe">${LRI.loupe}</button><button data-v="ba" aria-label="Avant/Après">${LRI.ba}</button><span class="lr-tbl hide-s">Avant/Après</span><span class="lr-sp"></span><span class="lr-ck hide-s"><i></i>Épreuvage écran</span></div>
+        <div class="ln-film"></div>
+        <footer class="ln-bar">
+          <div class="ln-views"><button aria-label="Grille de photos">${LRI.gridP}</button><button aria-label="Grille carrée">${LRI.gridS}</button><button class="on" aria-label="Affichage détaillé">${LRI.single}</button></div>
+          <div class="ln-rate"><span class="ln-stars">${LRI.star.repeat(5)}</span><span class="ln-flag">${LRI.flag}</span></div>
+          <div class="ln-br"><button data-v="ba" aria-label="Avant / Après">${LRI.ba}</button><span class="ln-fit hide-s">Ajuster ${G.down}</span></div>
+        </footer>
       </section>
-      <aside class="lr-right">
-        <section class="lr-p"><h4>Histogramme</h4><div class="lr-histo"></div><div class="lr-exif mono"><span>ISO 200</span><span>35 mm</span><span>f/2,8</span><span>1/250 s</span></div></section>
-        <div class="lr-tools">${['crop', 'heal', 'redeye', 'mask'].map(k => `<span>${LRI[k]}</span>`).join('')}</div>
-        <div class="lr-rscroll">
-          <section class="lr-p lr-basic"><h4>Réglages de base</h4>
-            <div class="lr-treat"><span>Traitement :</span><b data-bw="0" class="on">Couleur</b><b data-bw="1">Noir et blanc</b></div>
-            <div class="lr-row"><span>Profil :</span><b>Couleur Adobe ${G.down}</b>${LRI.grid}</div>
-            ${LR_GROUPS.map(([g, sls], gi) => `${gi === 0 ? `<div class="lr-row"><span>Bal. blancs :</span>${LRI.drop}<b>Tel quel ${G.down}</b></div>` : `<div class="lr-gh">${g}${gi === 1 ? '<span data-a="auto">Auto</span>' : ''}</div>`}${sls.map(slider).join('')}`).join('')}
-          </section>
-          ${['Courbe des tonalités', 'Mélangeur de couleurs', 'Étalonnage des couleurs', 'Détail', 'Corrections de l\'objectif', 'Transformation', 'Effets', 'Étalonnage'].map(t => `<section class="lr-p closed"><h4>${t}</h4></section>`).join('')}
-        </div>
-        <div class="lr-rbtns"><button data-a="prev">Précédent</button><button data-a="reset">Réinitialiser</button></div>
-      </aside>
-    </div>
-    <div class="lr-film">
-      <div class="lr-fbar"><span class="lr-fb">1</span><span class="lr-fb">2</span><span class="lr-fb">${LRI.grid}</span><span class="lr-fpath"></span><span class="lr-sp"></span><span class="hide-s">Filtre : <b>Filtres désactivés ${G.down}</b></span></div>
-      <div class="lr-strip"></div>
+      <aside class="ln-panel"></aside>
+      <nav class="ln-tools">
+        ${[['edit', 'Modifier'], ['crop', 'Recadrer et faire pivoter'], ['remove', 'Supprimer'], ['mask', 'Masquage'], ['blur', 'Flou d\'objectif'], ['redeye', 'Yeux rouges']].map(([k, l], i) => `<button class="${i === 0 ? 'on' : ''}" data-p="${k}" title="${l}" aria-label="${l}">${LRI[k]}</button>`).join('')}
+        <span class="ln-tsep"></span>
+        <button data-p="presets" title="Paramètres prédéfinis" aria-label="Paramètres prédéfinis">${LRI.presets}</button>
+        <span class="ln-tsp"></span>
+        ${[['info', 'Info'], ['activity', 'Activité'], ['tag', 'Mots-clés']].map(([k, l]) => `<button data-p="${k}" title="${l}" aria-label="${l}">${LRI[k]}</button>`).join('')}
+      </nav>
     </div>
   </div>`;
-  const st = { p: null, i: 0, a: { ...LR_DEF }, saved: {}, hist: [], view: 'loupe', nat: null, clip: null, last: null };
+  const st = { p: null, i: 0, a: { ...LR_DEF }, saved: {}, view: 'single', nat: null, panel: 'edit', last: null };
   rec.state = st;
-  const root = $('.lr', body), stage = $('.lr-stage', body), pic = $('.lr-after .lr-pic', body), beforeImg = $('.lr-before .lr-img', body);
-  const warm = $('.lr-warm', body), tint = $('.lr-tint', body);
+  const root = $('.lrn', body), stage = $('.ln-stage', body), pic = $('.ln-after .ln-pic', body), beforeImg = $('.ln-before .ln-img', body);
+  const panel = $('.ln-panel', body);
   const key = () => `${st.p.id}:${st.i}`;
   const media = (src, i) => src ? `<img src="${esc(src)}" alt="${esc(st.p.title)} — photo ${i + 1}" draggable="false">` : poster(st.p, { label: i === 0, hue: i * 24 });
+  const fileOf = (p, i) => { const src = lrImages(p)[i]; return `${slug(p.short)}_${String(i + 1).padStart(4, '0')}.${src ? (src.split('.').pop().split(/[?#]/)[0] || 'jpg').toLowerCase() : 'dng'}`; };
+
+  function editHTML() {
+    return `<div class="ln-ph"><b>Modifier</b><span class="ln-phb"><button data-a="auto">Auto</button><button data-a="bw" class="${st.a.bw ? 'on' : ''}">N&amp;B</button></span></div>
+      <div class="ln-histo"></div>
+      <div class="ln-prof"><span>Profil</span><b>${st.a.bw ? 'Monochrome Adobe' : 'Couleur Adobe'} ${G.down}</b>${LRI.presets}</div>
+      <div class="ln-scroll">${LR_GROUPS.map(([g, sls, btn]) => `<section class="ln-grp"><h4><span class="ln-chev">${G.down}</span>${g}<i class="ln-eye">${LRI.eye}</i></h4>
+        ${g === 'Couleur' ? `<div class="ln-wb"><span>Bal. blancs</span><b>Tel quel ${G.down}</b>${LRI.drop}</div>` : ''}
+        ${sls.map(slider).join('')}${btn ? `<button class="ln-sub">${btn}</button>` : ''}</section>`).join('')}
+        ${['Détail', 'Optique', 'Géométrie'].map(t => `<section class="ln-grp closed"><h4><span class="ln-chev">${G.down}</span>${t}</h4></section>`).join('')}
+      </div>
+      <div class="ln-pfoot"><button data-a="prev">Précédent</button><button data-a="reset">Réinitialiser</button></div>`;
+  }
+  function presetsHTML() {
+    const imgs = lrImages(st.p), src = imgs[st.i];
+    return `<div class="ln-ph"><b>Paramètres prédéfinis</b></div>
+      <div class="ln-ptabs"><span>Vous</span><span>Premium</span><span class="on">Recommandés</span></div>
+      <div class="ln-scroll">${LR_PRESETS.map(([g, items]) => `<div class="ln-pgh">${esc(g)}</div><div class="ln-pgrid">${items.map(([n, v]) => { const a = { ...LR_DEF, ...v }, t = lrTone(a); return `<button class="ln-pc" data-preset="${esc(n)}"><span class="ln-pth" style="filter:${lrFilter(a)}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : poster(st.p, { label: false, hue: st.i * 24 })}<i style="background:${t.warmC};opacity:${t.warm.toFixed(2)}"></i></span><span>${esc(n)}</span></button>`; }).join('')}</div>`).join('')}</div>`;
+  }
+  function infoHTML() {
+    const p = st.p, d = st.nat;
+    return `<div class="ln-ph"><b>Info</b></div><div class="ln-scroll ln-info">
+      <div class="ln-ir"><span>Nom du fichier</span><b>${esc(fileOf(p, st.i))}</b></div>
+      <div class="ln-ir"><span>Titre</span><b>${esc(p.title)}</b></div>
+      <div class="ln-ir"><span>Légende</span><p>${esc(p.description)}</p></div>
+      <div class="ln-ir"><span>Client</span><b>${esc(p.client)}</b></div>
+      <div class="ln-ir"><span>Rôle</span><b>${esc(p.role)}</b></div>
+      <div class="ln-ir"><span>Date de capture</span><b>${esc(p.year)}</b></div>
+      <div class="ln-ir"><span>Mots-clés</span><div class="ln-kw">${(p.tags || []).map(t => `<i>${esc(t)}</i>`).join('')}</div></div>
+      <div class="ln-ir"><span>Dimensions</span><b>${d ? `${d.w} × ${d.h}` : '6000 × 4000'}</b></div>
+      <div class="ln-ir"><span>Appareil</span><b>ISO 200 · 35 mm · f/2,8 · 1/250 s</b></div>
+      <div class="ln-ir"><span>Copyright</span><b>© ${esc(CONFIG.name)}</b></div></div>`;
+  }
+  function renderPanel() {
+    const k = st.panel;
+    $$('.ln-tools [data-p]', body).forEach(b => b.classList.toggle('on', b.dataset.p === k));
+    if (k === 'presets') panel.innerHTML = presetsHTML();
+    else if (k === 'info') panel.innerHTML = infoHTML();
+    else if (k === 'edit') { panel.innerHTML = editHTML(); syncSliders(); }
+    else panel.innerHTML = `<div class="ln-ph"><b>${esc($(`.ln-tools [data-p="${k}"]`, body).getAttribute('aria-label'))}</b></div><p class="ln-empty">Outil non utilisé sur ce projet.<br>Ouvre <b>Modifier</b> pour les réglages.</p>`;
+    apply();
+  }
   let raf = 0;
   function apply() {
-    raf = 0; const a = st.a;
+    raf = 0; const a = st.a, t = lrTone(a);
     pic.style.filter = lrFilter(a);
-    warm.style.background = a.temp >= 0 ? '#ff9b3d' : '#3d8bff'; warm.style.opacity = a.bw ? 0 : (Math.abs(a.temp) / 170).toFixed(3);
-    tint.style.background = a.tint >= 0 ? '#ff3dc8' : '#3dff6b'; tint.style.opacity = a.bw ? 0 : (Math.abs(a.tint) / 220).toFixed(3);
-    $('.lr-histo', body).innerHTML = lrHisto(key(), a);
-    $$('.lr-treat b', body).forEach(b => b.classList.toggle('on', (b.dataset.bw === '1') === a.bw));
+    const w = $('.ln-warm', body), ti = $('.ln-tint', body);
+    w.style.background = t.warmC; w.style.opacity = t.warm.toFixed(3);
+    ti.style.background = t.tintC; ti.style.opacity = t.tint.toFixed(3);
+    const hi = $('.ln-histo', body); if (hi) hi.innerHTML = lrHisto(key(), a);
+    const bw = $('[data-a="bw"]', body); if (bw) bw.classList.toggle('on', a.bw);
   }
   const schedule = () => { if (!raf) raf = requestAnimationFrame(apply); };
   function syncSliders() {
-    $$('.lr-sl input', body).forEach(inp => { inp.value = st.a[inp.dataset.k]; $(`[data-v="${inp.dataset.k}"]`, body).textContent = lrFmt(inp.dataset.k, st.a[inp.dataset.k]); });
+    $$('.ln-sl input[type=range]', body).forEach(inp => { const k = inp.dataset.k; inp.value = st.a[k]; const v = $(`[data-v="${k}"]`, body); if (v) v.value = lrFmt(k, st.a[k]); });
   }
-  function renderHist() {
-    $('.lr-hist', body).innerHTML = [...st.hist].reverse().map((h, k) => `<div class="${k === 0 ? 'on' : ''}">${esc(h)}</div>`).join('') + `<div>Importer (${new Date().toLocaleDateString('fr-FR')})</div>`;
-  }
-  const pushHist = label => { if (st.hist[st.hist.length - 1] === label) return; st.hist.push(label); if (st.hist.length > 12) st.hist.shift(); st.saved[key()] = { a: { ...st.a }, hist: st.hist.slice() }; renderHist(); };
+  const save = () => { st.saved[key()] = { ...st.a }; };
   function fit() {
-    const W = stage.clientWidth - 40, H = stage.clientHeight - 40; if (W <= 0 || H <= 0) return;
+    const W = stage.clientWidth - 40, H = stage.clientHeight - 36; if (W <= 0 || H <= 0) return;
     const ar = st.nat ? st.nat.w / st.nat.h : 3 / 2;
-    const ba = st.view === 'ba', bw = ba ? (W - 12) / 2 : W;
+    const bw = st.view === 'ba' ? (W - 12) / 2 : W;
     let w = bw, hh = w / ar; if (hh > H) { hh = H; w = hh * ar; }
-    $$('.lr-img', body).forEach(el => { el.style.width = Math.round(w) + 'px'; el.style.height = Math.round(hh) + 'px'; });
+    $$('.ln-img', body).forEach(el => { el.style.width = Math.round(w) + 'px'; el.style.height = Math.round(hh) + 'px'; });
   }
   function show(i) {
     const p = st.p, imgs = lrImages(p);
-    if (st.p && st.i !== undefined) st.saved[key()] = { a: { ...st.a }, hist: st.hist.slice() };
+    if (st.i !== undefined) save();
     st.last = { ...st.a };
     st.i = (i + imgs.length) % imgs.length; st.nat = null;
-    const sv = st.saved[key()] || { a: { ...LR_DEF }, hist: [] };
-    st.a = { ...sv.a }; st.hist = sv.hist.slice();
+    st.a = { ...LR_DEF, ...(st.saved[key()] || {}) };
     const src = imgs[st.i], bsrc = asList(p.before)[st.i];
     pic.innerHTML = media(src, st.i);
     beforeImg.innerHTML = bsrc ? `<img src="${esc(bsrc)}" alt="Avant retouche" draggable="false">` : media(src, st.i);
     beforeImg.classList.toggle('flat', !bsrc);
-    $('.lr-nav', body).innerHTML = media(src, st.i);
-    const fn = `${slug(p.short)}_${String(st.i + 1).padStart(4, '0')}.${src ? (src.split('.').pop().split(/[?#]/)[0] || 'jpg').toLowerCase() : 'cr3'}`;
-    $('.lr-fn', body).textContent = fn;
-    $('.lr-sub', body).textContent = `${p.title} — ${p.client} · ${p.year}`;
-    $('.lr-fpath', body).innerHTML = `Collection : <b>${esc(p.short)}</b>&nbsp;&nbsp;${imgs.length} photo${imgs.length > 1 ? 's' : ''} / 1 sélectionnée / ${esc(fn)}`;
-    $$('.lr-th', body).forEach((t, k) => t.classList.toggle('on', k === st.i));
+    $$('.ln-th', body).forEach((t, k) => t.classList.toggle('on', k === st.i));
     const img = $('img', pic);
-    if (img) { const done = () => { if (img.naturalWidth) st.nat = { w: img.naturalWidth, h: img.naturalHeight }; fit(); }; if (img.complete) done(); else img.addEventListener('load', done, { once: true }); }
-    $$('.lr-pi', body).forEach(x => x.classList.remove('on'));
-    syncSliders(); renderHist(); apply(); fit();
+    if (img) { const done = () => { if (img.naturalWidth) st.nat = { w: img.naturalWidth, h: img.naturalHeight }; fit(); if (st.panel === 'info') renderPanel(); }; if (img.complete) done(); else img.addEventListener('load', done, { once: true }); }
+    renderPanel(); fit();
   }
   function load(p) {
     if (!p) return;
+    if (st.p && st.i !== undefined) save();
     st.p = p; st.i = undefined;
-    rec.setTitle('Catalogue Lightroom.lrcat - Adobe Photoshop Lightroom Classic - Développement');
-    $$('.lr-col', body).forEach(c => c.classList.toggle('on', c.dataset.id === p.id));
-    $('.lr-cmt', body).innerHTML = `<b>${esc(p.title)}</b><small>${esc(p.client)} · ${esc(p.year)} · ${esc(p.role)}</small><p>${esc(p.description)}</p><div class="lr-tags">${(p.tags || []).map(t => `<span>${esc(t)}</span>`).join('')}</div>${asList(p.before).length ? '<p class="lr-tip">Astuce : bouton Y|Y (ou touche Y) pour comparer avant / après.</p>' : '<p class="lr-tip">Astuce : bouges les curseurs, essaie un paramètre prédéfini, puis Y|Y pour comparer.</p>'}`;
+    rec.setTitle(`Lightroom — ${p.short}`);
     const imgs = lrImages(p);
-    $('.lr-strip', body).innerHTML = imgs.map((src, k) => `<button class="lr-th" data-i="${k}" aria-label="Photo ${k + 1}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : poster(p, { label: false, hue: k * 24 })}<span class="mono">${k + 1}</span></button>`).join('');
+    $('.ln-alb', body).textContent = p.short;
+    $('.ln-cnt', body).textContent = `${imgs.length} photo${imgs.length > 1 ? 's' : ''}`;
+    $('.ln-all', body).textContent = list.reduce((n, q) => n + lrImages(q).length, 0);
+    $$('.ln-al', body).forEach(c => c.classList.toggle('on', c.dataset.id === p.id));
+    $('.ln-film', body).innerHTML = imgs.map((src, k) => `<button class="ln-th" data-i="${k}" aria-label="Photo ${k + 1}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : poster(p, { label: false, hue: k * 24 })}</button>`).join('');
     show(0);
   }
   st.load = load;
-  // curseurs
-  const right = $('.lr-right', body);
-  right.addEventListener('input', e => {
-    const inp = e.target.closest('input[data-k]'); if (!inp) return;
-    const k = inp.dataset.k; st.a[k] = +inp.value; $(`[data-v="${k}"]`, body).textContent = lrFmt(k, st.a[k]); schedule();
+  // réglages
+  panel.addEventListener('input', e => {
+    const inp = e.target.closest('input[type=range][data-k]'); if (!inp) return;
+    const k = inp.dataset.k; st.a[k] = +inp.value; const v = $(`[data-v="${k}"]`, body); if (v) v.value = lrFmt(k, st.a[k]); schedule();
   });
-  right.addEventListener('change', e => { const inp = e.target.closest('input[data-k]'); if (inp) pushHist(`${LR_LABEL[inp.dataset.k]} ${lrFmt(inp.dataset.k, st.a[inp.dataset.k])}`); });
-  right.addEventListener('dblclick', e => { const l = e.target.closest('.lr-sll'); if (!l) return; const k = l.parentElement.dataset.k; st.a[k] = 0; syncSliders(); schedule(); pushHist(`${LR_LABEL[k]} ${lrFmt(k, 0)}`); });
-  right.addEventListener('click', e => {
-    const b = e.target.closest('[data-bw]'); if (b) { st.a.bw = b.dataset.bw === '1'; schedule(); pushHist(st.a.bw ? 'Noir et blanc' : 'Couleur'); return; }
-    const a = e.target.closest('[data-a]');
-    if (a && a.dataset.a === 'auto') { Object.assign(st.a, { exp: 0.25, con: 12, hi: -28, sh: 22, wh: 10, bl: -8, vib: 10 }); syncSliders(); schedule(); pushHist('Ton automatique'); }
-    else if (a && a.dataset.a === 'reset') { st.a = { ...LR_DEF }; syncSliders(); schedule(); pushHist('Réinitialiser'); }
-    else if (a && a.dataset.a === 'prev' && st.last) { st.a = { ...st.last }; syncSliders(); schedule(); pushHist('Coller les paramètres (Précédent)'); }
-    const hd = e.target.closest('.lr-p > h4'); if (hd) hd.parentElement.classList.toggle('closed');
-  });
-  // panneau de gauche
-  $('.lr-left', body).addEventListener('click', e => {
+  panel.addEventListener('change', save);
+  panel.addEventListener('dblclick', e => { const l = e.target.closest('.ln-sll'); if (!l) return; const k = l.closest('.ln-sl').dataset.k; st.a[k] = 0; syncSliders(); schedule(); save(); });
+  panel.addEventListener('click', e => {
     const pr = e.target.closest('[data-preset]');
-    if (pr) { const found = LR_PRESETS.flatMap(g => g[1]).find(x => x[0] === pr.dataset.preset); st.a = { ...LR_DEF, ...found[1] }; syncSliders(); schedule(); pushHist(`Paramètre prédéfini : ${found[0]}`); $$('.lr-pi', body).forEach(x => x.classList.toggle('on', x === pr)); return; }
-    const c = e.target.closest('.lr-col'); if (c) { load(byId(c.dataset.id)); return; }
+    if (pr) { const found = LR_PRESETS.flatMap(g => g[1]).find(x => x[0] === pr.dataset.preset); st.a = { ...LR_DEF, ...found[1] }; save(); schedule(); $$('.ln-pc', body).forEach(x => x.classList.toggle('on', x === pr)); return; }
     const a = e.target.closest('[data-a]');
-    if (a && a.dataset.a === 'copy') { st.clip = { ...st.a }; notify({ title: 'Paramètres copiés', body: 'Sélectionne une autre photo puis clique sur Coller.', ic: 'lrc', app: 'Lightroom Classic', time: 3000 }); }
-    else if (a && a.dataset.a === 'paste' && st.clip) { st.a = { ...st.clip }; syncSliders(); schedule(); pushHist('Coller les paramètres'); }
-    const hd = e.target.closest('.lr-p > h4'); if (hd) hd.parentElement.classList.toggle('closed');
+    if (a) {
+      const k = a.dataset.a;
+      if (k === 'auto') Object.assign(st.a, { exp: 0.25, con: 12, hi: -28, sh: 22, wh: 10, bl: -8, vib: 10 });
+      else if (k === 'bw') st.a.bw = !st.a.bw;
+      else if (k === 'reset') st.a = { ...LR_DEF };
+      else if (k === 'prev' && st.last) st.a = { ...st.last };
+      save(); renderPanel(); return;
+    }
+    const hd = e.target.closest('.ln-grp > h4'); if (hd && !e.target.closest('.ln-eye')) hd.parentElement.classList.toggle('closed');
   });
-  // vues
-  const setView = v => { st.view = v; root.classList.toggle('ba', v === 'ba'); $$('.lr-toolbar [data-v]', body).forEach(x => x.classList.toggle('on', x.dataset.v === v)); fit(); };
-  $('.lr-toolbar', body).addEventListener('click', e => { const b = e.target.closest('[data-v]'); if (b) setView(b.dataset.v); });
-  $('.lr-strip', body).addEventListener('click', e => { const t = e.target.closest('.lr-th'); if (t) show(+t.dataset.i); });
-  $('.lr-mods', body).addEventListener('click', e => { const b = e.target.closest('b'); if (b && !b.classList.contains('on')) notify({ title: `Module ${b.textContent}`, body: 'Ce portfolio montre le module Développement.', ic: 'lrc', app: 'Lightroom Classic', time: 2500 }); });
+  // outils de droite, albums, pellicule, vues
+  $('.ln-tools', body).addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (b) { st.panel = b.dataset.p; renderPanel(); } });
+  $('.ln-side', body).addEventListener('click', e => { const c = e.target.closest('.ln-al'); if (c) load(byId(c.dataset.id)); });
+  $('.ln-film', body).addEventListener('click', e => { const t = e.target.closest('.ln-th'); if (t) show(+t.dataset.i); });
+  const setView = v => { st.view = v; root.classList.toggle('ba', v === 'ba'); $('[data-v="ba"]', body).classList.toggle('on', v === 'ba'); fit(); };
+  $('.ln-bar', body).addEventListener('click', e => { if (e.target.closest('[data-v="ba"]')) setView(st.view === 'ba' ? 'single' : 'ba'); });
+  $('.ln-top', body).addEventListener('click', e => {
+    const a = e.target.closest('[data-a]'); if (!a) return;
+    if (a.dataset.a === 'side') { root.classList.toggle('no-side'); setTimeout(fit, 20); }
+    else if (a.dataset.a === 'share') quickLook(st.p, a.getBoundingClientRect());
+  });
   rec.onkey = e => {
     if (e.key === 'ArrowRight') show(st.i + 1);
     else if (e.key === 'ArrowLeft') show(st.i - 1);
-    else if (e.key.toLowerCase() === 'y') setView(st.view === 'ba' ? 'loupe' : 'ba');
-    else if (e.key === '\\') root.classList.toggle('show-before');
+    else if (e.key === '\\' || e.key.toLowerCase() === 'y') setView(st.view === 'ba' ? 'single' : 'ba');
   };
   const ro = new ResizeObserver(() => fit()); ro.observe(stage);
   rec.onclose = () => ro.disconnect();
@@ -1836,6 +1900,42 @@ function slideshow(slides, start, onExit) {
   document.addEventListener('keydown', key, true); window.addEventListener('resize', fit); document.addEventListener('fullscreenchange', fsc);
   if (el.requestFullscreen && !isTouch()) el.requestFullscreen().catch(() => {});
   fit(); show(i); wake();
+}
+
+/* ==================================================================
+   COULISSES — photos de moi au travail (visionneuse façon Aperçu)
+   ================================================================== */
+function openCoulisses(i = 0, from) {
+  const list = COUL();
+  if (!list.length) { notify({ title: 'Coulisses', body: 'Aucune photo pour le moment.', ic: 'folder', app: 'Finder', time: 3000 }); return; }
+  const ex = WM.list.get('coulisses');
+  if (ex) { if (ex.minimized) WM.restore(ex.id); else WM.focus(ex.id); ex.state.go(i); return; }
+  WM.open('coulisses', {
+    app: 'finder', kind: 'coulisses', title: 'Coulisses', w: 940, h: 640, cls: 'win-coul', minW: 520, from,
+    build: (body, rec) => {
+      body.innerHTML = `<div class="cl">
+        <aside class="cl-side">${list.map((c, k) => `<button class="cl-th" data-k="${k}" aria-label="Photo ${k + 1}">${coulMedia(c)}<span>${k + 1}</span></button>`).join('')}</aside>
+        <section class="cl-main"><div class="cl-stage"></div>
+          <button class="cl-nav l" data-d="-1" aria-label="Photo précédente">${G.back}</button><button class="cl-nav r" data-d="1" aria-label="Photo suivante">${G.fwd}</button>
+          <div class="cl-cap"><b></b><span class="mono"></span></div></section></div>`;
+      const st = { i: 0 };
+      st.go = k => {
+        st.i = (k + list.length) % list.length; const c = list[st.i];
+        $('.cl-stage', body).innerHTML = coulMedia(c, 'cl-big');
+        $('.cl-cap b', body).textContent = c.caption || '';
+        $('.cl-cap span', body).textContent = `${st.i + 1} / ${list.length}`;
+        rec.setTitle(`Coulisses — ${st.i + 1} sur ${list.length}`);
+        $$('.cl-th', body).forEach((t, n) => t.classList.toggle('on', n === st.i));
+      };
+      rec.state = st;
+      body.addEventListener('click', e => {
+        const t = e.target.closest('.cl-th'); if (t) { st.go(+t.dataset.k); return; }
+        const d = e.target.closest('[data-d]'); if (d) st.go(st.i + Number(d.dataset.d));
+      });
+      rec.onkey = e => { if (e.key === 'ArrowRight') st.go(st.i + 1); else if (e.key === 'ArrowLeft') st.go(st.i - 1); };
+      st.go(i);
+    }
+  });
 }
 
 /* ==================================================================

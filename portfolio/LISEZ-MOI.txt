@@ -3,7 +3,10 @@ PORTFOLIO macOS — mode d'emploi
 
 1. OUVRIR LE SITE
    - Double-clique sur index.html (tous les fichiers du dossier doivent rester ensemble).
-   - Liens directs utiles à partager :
+   - À l'arrivée, le visiteur voit ton MacBook posé sur un bureau (avec une caméra
+     et un storyboard). Il entre dans l'ordinateur en scrollant, en cliquant sur
+     le Mac, avec la touche Entrée ou le bouton « Entrer » en haut à droite.
+   - Liens directs utiles à partager (ils sautent l'arrivée) :
        index.html#presentation   → ouvre directement ta présentation
        index.html#contact        → ouvre directement la page Contact
        index.html#projets        → ouvre le Finder avec tous les projets
@@ -16,7 +19,7 @@ PORTFOLIO macOS — mode d'emploi
    logos.js     vrais logos des logiciels et icônes d'apps
    core.js      bureau, fenêtres, Dock, menus, widgets
    apps.js      les applications (Finder, DaVinci Resolve, After Effects,
-                Lightroom Classic, Photoshop, Canva, Mail, Contacts, Notes, Keynote)
+                Lightroom, Photoshop, Canva, Mail, Contacts, Notes, Keynote)
    style.css / apps.css   l'apparence
    assets/      tes vidéos, captures de timeline, photos, storyboards, avatar, CV
 
@@ -50,10 +53,10 @@ PORTFOLIO macOS — mode d'emploi
    Sans vidéo ni capture, un aperçu et une timeline réalistes sont générés.
 
 5. LIGHTROOM, PHOTOSHOP ET CANVA
-   - Photos (type 'photo') → Lightroom Classic (module Développement) :
-       gallery: ['assets/photos/serie-01.jpg', …]   (une photo = une vignette de la pellicule)
+   - Photos (type 'photo') → Lightroom :
+       gallery: ['assets/photos/serie-01.jpg', …]   (une photo = une vignette de la pellicule, chaque projet = un album)
      Option avant/après : before: ['assets/photos/serie-01-avant.jpg', …]
-     → bouton Y|Y (ou touche Y) pour comparer avant / après.
+     → bouton Avant/Après en bas à droite (ou touche \) pour comparer.
      Les curseurs (exposition, contraste, balance des blancs…) et les paramètres
      prédéfinis fonctionnent pour de vrai sur l'image.
    - Affiches (type 'design', format 'affiche') → Photoshop : cover ou gallery.
@@ -71,14 +74,22 @@ PORTFOLIO macOS — mode d'emploi
    l'envoyer lui-même : crée un formulaire gratuit sur https://formspree.io
    et colle son adresse dans config.js → formEndpoint.
 
-8. GARDER LE SITE RAPIDE
+8. TES PHOTOS DE TOURNAGE (« Coulisses »)
+   Des photos de toi en train de travailler sont posées sur le bureau comme des
+   polaroïds (on peut les déplacer) et rangées dans le dossier « Coulisses ».
+   Mets-les dans assets/coulisses/ puis dans config.js → coulisses :
+       { photo: 'assets/coulisses/tournage-1.jpg', caption: 'En tournage' }
+   Tant qu'une photo est vide, un emplacement « Photo à venir » s'affiche.
+   6 photos maximum sont posées sur le bureau (toutes sont dans le dossier).
+
+9. GARDER LE SITE RAPIDE
    - Vidéos : MP4 (H.264), 1080p max, compressées (HandBrake, préréglage
      « Fast 1080p30 »). Une capture de timeline vidéo peut être en 720p.
-   - Images : JPG/WebP de 2000 px de large max.
+   - Images : JPG/WebP de 2000 px de large max (1200 px suffit pour les coulisses).
    - Le site n'utilise plus de flou ni d'animations lourdes derrière les
      fenêtres : il reste fluide même sur un ordinateur modeste.
 
-9. METTRE EN LIGNE (gratuit)
+10. METTRE EN LIGNE (gratuit)
    GitHub Pages, Netlify ou Vercel : dépose simplement le dossier « portfolio ».
    Netlify Drop (app.netlify.com/drop) : glisse le dossier dans la page.
 

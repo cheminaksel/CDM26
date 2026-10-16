@@ -1,0 +1,3 @@
+Photos de toi en train de travailler (tournage, montage, shooting…).
+Elles sont posées sur le bureau et dans le dossier « Coulisses ».
+Ex. : tournage-1.jpg → coulisses: [{ photo: 'assets/coulisses/tournage-1.jpg', caption: 'En tournage' }]

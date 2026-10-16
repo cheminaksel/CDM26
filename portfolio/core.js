@@ -349,6 +349,7 @@ function tickClock() {
   const c = $('#mbClock'); if (c) c.textContent = `${ucfirst(date)}  ${time}`;
   $('#lockTime').textContent = time;
   $('#lockDate').textContent = ucfirst(d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }));
+  ldClock();
 }
 
 /* ==================================================================
@@ -577,8 +578,8 @@ const APPS = {
               status: ['Chargement des préférences…', 'Initialisation du moteur GPU…', 'Chargement des plug-ins…', 'Ouverture du projet…'] },
   ae:       { name: 'After Effects', icon: 'ae', splash: 'adobe', open: from => openAE(null, from),
               status: ['Initialisation des plug-ins…', 'Chargement des effets…', 'Ouverture des compositions…'] },
-  lr:       { name: 'Lightroom Classic', icon: 'lrc', splash: 'adobe', open: from => openLR(null, from),
-              status: ['Ouverture du catalogue…', 'Chargement des aperçus…', 'Préparation du module Développement…'] },
+  lr:       { name: 'Lightroom', icon: 'lr', splash: 'adobe', open: from => openLR(null, from),
+              status: ['Synchronisation des photos…', 'Chargement des albums…', 'Préparation de l\'édition…'] },
   ps:       { name: 'Photoshop', icon: 'ps', splash: 'adobe', open: from => openPS(null, from),
               status: ['Lecture des préférences…', 'Chargement des pinceaux…', 'Ouverture des documents…'] },
   canva:    { name: 'Canva', icon: 'canva', splash: 'canva', open: from => openCanva(null, from),
@@ -605,7 +606,7 @@ function splash(appId) {
   const app = APPS[appId];
   return new Promise(res => {
     const year = new Date().getFullYear();
-    const names = { resolve: 'DaVinci Resolve 19', ae: `Adobe After Effects ${year}`, ps: `Adobe Photoshop ${year}`, lr: 'Adobe Lightroom Classic', canva: 'Canva' };
+    const names = { resolve: 'DaVinci Resolve 19', ae: `Adobe After Effects ${year}`, ps: `Adobe Photoshop ${year}`, lr: 'Adobe Lightroom', canva: 'Canva' };
     const el = h(`<div class="splash sp-${app.splash} sp-${appId}"><div class="sp-art"></div><div class="sp-logo">${icon(app.icon)}</div>
       <div class="sp-name">${esc(names[appId] || app.name)}</div><div class="sp-status">Démarrage…</div><div class="sp-bar"><i></i></div>
       <div class="sp-legal">${app.splash === 'adobe' ? '© 1990-' + year + ' Adobe. Tous droits réservés.' : app.splash === 'resolve' ? 'Blackmagic Design' : ''}</div></div>`);
@@ -683,6 +684,7 @@ const DESK = [
   { id: 'photos', label: 'Photos', icon: 'folderPhoto', open: f => openFolder('photo', f) },
   { id: 'motion', label: 'Motion design', icon: 'folderMotion', open: f => openFolder('motion', f) },
   { id: 'story', label: 'Storyboards', icon: 'folderStory', open: f => openNotes('folder:storyboards', f) },
+  { id: 'coul', label: 'Coulisses', icon: 'folderClap', open: f => openCoulisses(0, f) },
   { id: 'reel', label: 'Showreel.mov', icon: 'mov', open: f => openShowreel(f) },
   { id: 'pres', label: 'Présentation.key', icon: 'key', open: f => openPresentation(f) },
   { id: 'cv', label: 'CV.pdf', icon: 'pdf', open: f => openCV(f) },
@@ -711,7 +713,7 @@ function buildDesk() {
       '-',
       { label: 'Changer le fond d\'écran', action: nextWallpaper },
       { label: STATE.theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre', action: toggleTheme },
-      { label: 'Ranger le bureau', action: () => { DESK.forEach(d => { d.moved = false; }); layoutDesk(true); } },
+      { label: 'Ranger le bureau', action: () => { DESK.forEach(d => { d.moved = false; }); layoutDesk(true); layoutPolas(true); } },
       ...(STATE.sticky ? [] : [{ label: 'Afficher le pense-bête', action: () => { STATE.sticky = true; savePrefs(); buildSticky(); } }]),
       '-',
       { label: 'À propos de ce portfolio', action: () => openAbout() }
@@ -784,66 +786,31 @@ function deskDown(e) {
 }
 
 /* ==================================================================
-   BUREAU — widgets (pour que le bureau ne soit plus vide)
+   BUREAU — widgets
    ================================================================== */
-let photoCycle = { list: [], i: 0, timer: 0 };
 function buildWidgets() {
   const wrap = $('#widgets');
-  const d = new Date();
-  const favs = CONFIG.projects.filter(p => p.fav);
-  const photos = (favs.length ? favs : CONFIG.projects).slice(0, 5);
   const sb = CONFIG.storyboards || [];
-  const reelVid = isVideoFile(REEL.video) && !isMobile() && !reduceMotion();
-  const cal = calendarHTML(d);
   wrap.innerHTML = `
     <div class="wg wg-m wg-prof" style="--i:0">
       <div class="wp-top"><span class="wp-av">${avatarHTML()}</span><div class="wp-id"><b>${esc(CONFIG.name)}</b><span>${esc(CONFIG.role)}</span><small>${G.pin}${esc(CONFIG.city)}</small></div></div>
       <div class="wp-status"><i></i><span>${esc(CONFIG.status)}</span></div>
       <div class="wp-act"><button class="wp-btn" data-w="pres"><span class="wp-ic">${icon('keynote')}</span>Présentation</button><button class="wp-btn primary" data-w="contact">${G.send}Me contacter</button></div>
     </div>
-    <button class="wg wg-m wg-reel" data-w="reel" style="--i:1" aria-label="Lire le showreel">
-      <div class="wr-media">${reelVid ? `<video src="${esc(REEL.video)}" muted loop playsinline autoplay preload="metadata"></video>` : poster(REEL, { label: false })}</div>
-      <div class="wr-over"><span class="wr-kicker">${G.film}SHOWREEL</span><b>${esc(REEL.title)}</b><small>${esc(REEL.duration)} · ${esc(CONFIG.role)}</small></div>
-      <span class="wr-play">${G.play}</span>
-    </button>
-    <div class="wg wg-s wg-clock" style="--i:2">${clockHTML(d)}<span class="wc-city">${esc(CONFIG.city.split(',')[0])}</span></div>
-    <div class="wg wg-s wg-cal" style="--i:3">${cal}</div>
-    <button class="wg wg-s wg-photos" data-w="photo" style="--i:4" aria-label="Voir les projets">
-      ${photos.map((p, i) => `<div class="wph-slide ${i === 0 ? 'on' : ''}">${poster(p, { label: false })}</div>`).join('')}
-      <span class="wph-tag">${G.heart}Coups de cœur</span>
-    </button>
-    <button class="wg wg-s wg-notes" data-w="story" style="--i:5" aria-label="Ouvrir les storyboards">
+    <div class="wg wg-s wg-cal" style="--i:1">${calendarHTML(new Date())}</div>
+    <button class="wg wg-s wg-notes" data-w="story" style="--i:2" aria-label="Ouvrir les storyboards">
       <div class="wn-h"><span class="wn-ico">${icon('notes')}</span><b>Storyboards</b></div>
       <div class="wn-b"><b>${esc(sb[0] ? sb[0].title : 'Mes storyboards')}</b><small>${esc(sb[0] ? sb[0].description : 'Ajoute tes planches dans config.js')}</small></div>
       <div class="wn-f">${sb.length} storyboard${sb.length > 1 ? 's' : ''}</div>
     </button>`;
-  clearInterval(photoCycle.timer);
-  photoCycle = { list: photos, i: 0, timer: setInterval(() => {
-    if (document.hidden || photos.length < 2) return;
-    photoCycle.i = (photoCycle.i + 1) % photos.length;
-    $$('.wph-slide', wrap).forEach((s, k) => s.classList.toggle('on', k === photoCycle.i));
-  }, 6000) };
   wrap.addEventListener('click', e => {
     const b = e.target.closest('[data-w]'); if (!b) return;
     const r = b.getBoundingClientRect(), k = b.dataset.w;
     if (k === 'pres') openPresentation(r);
     else if (k === 'contact') openContact(r);
-    else if (k === 'reel') openShowreel(r);
     else if (k === 'story') openNotes('folder:storyboards', r);
-    else if (k === 'photo') {
-      const p = photoCycle.list[photoCycle.i]; if (p) openProject(p, r);
-    }
   });
   buildSticky();
-}
-function clockHTML(d) {
-  const s = d.getSeconds() + d.getMilliseconds() / 1000, m = d.getMinutes() + s / 60, hr = (d.getHours() % 12) + m / 60;
-  const ticks = Array.from({ length: 12 }, (_, i) => `<i style="transform:rotate(${i * 30}deg)"></i>`).join('');
-  const nums = [12, 3, 6, 9].map((n, i) => `<span class="n${i}">${n}</span>`).join('');
-  return `<div class="clock"><div class="ck-ticks">${ticks}</div>${nums}
-    <i class="hand hr" style="transform:rotate(${(hr * 30).toFixed(1)}deg);animation-delay:-${(hr * 3600).toFixed(1)}s"></i>
-    <i class="hand mn" style="transform:rotate(${(m * 6).toFixed(1)}deg);animation-delay:-${(m * 60).toFixed(1)}s"></i>
-    <i class="hand sc" style="transform:rotate(${(Math.floor(s) * 6)}deg);animation-delay:-${Math.floor(s)}s"></i><i class="ck-pin"></i></div>`;
 }
 function calendarHTML(d) {
   const y = d.getFullYear(), mo = d.getMonth();
@@ -862,7 +829,7 @@ function buildSticky() {
     <p>Double-clique sur un dossier, ouvre une app dans le Dock — ou clique sur <a href="#" data-s="pres">Présentation</a> en haut pour me découvrir.</p>
     <p class="st-sign">— ${esc(firstName())}</p></div>`);
   $('#desktop').append(s);
-  $('.st-x', s).addEventListener('click', () => { STATE.sticky = false; savePrefs(); s.remove(); });
+  $('.st-x', s).addEventListener('click', () => { STATE.sticky = false; savePrefs(); s.remove(); layoutPolas(true); });
   $('[data-s]', s).addEventListener('click', e => { e.preventDefault(); openPresentation(); });
   const bar = $('.st-bar', s);
   bar.addEventListener('pointerdown', e => {
@@ -874,11 +841,69 @@ function buildSticky() {
     bar.addEventListener('pointermove', mv); bar.addEventListener('pointerup', up);
   });
 }
-// coupe la vidéo du widget quand l'onglet est masqué
-document.addEventListener('visibilitychange', () => {
-  const v = $('.wg-reel video'); if (!v) return;
-  if (document.hidden) v.pause(); else v.play().catch(() => {});
-});
+
+/* ==================================================================
+   BUREAU — photos de moi au travail (« Coulisses »)
+   Posées sur le bureau comme des tirages photo ; configurées dans
+   config.js → coulisses. Sans photo, un emplacement « Photo à venir ».
+   ================================================================== */
+const COUL = () => (CONFIG.coulisses || []).filter(c => c && (c.photo || c.caption));
+const coulMedia = (c, cls = '') => c.photo
+  ? `<img class="${cls}" src="${esc(c.photo)}" alt="${esc(c.caption || 'Photo de ' + firstName() + ' au travail')}" loading="lazy" decoding="async" draggable="false">`
+  : `<span class="pola-ph ${cls}">${G.camera}<small>Photo à venir</small></span>`;
+const POLA_LOOK = [[-5, 0.04, 0.02], [4, 0.52, 0.1], [3, 0.1, 0.5], [-6, 0.56, 0.56], [2, 0.3, 0.3], [-3, 0.7, 0.32]];
+function buildPolas() {
+  const old = $('#polas'); if (old) old.remove();
+  const list = COUL(); if (!list.length) return;
+  const wrap = h(`<section class="polas" id="polas" aria-label="Photos de ${esc(firstName())} au travail">${list.slice(0, 6).map((c, i) => `<figure class="pola" data-i="${i}" tabindex="0" role="button" aria-label="Voir la photo : ${esc(c.caption || 'Coulisses')}" style="--i:${i};--r:${POLA_LOOK[i][0]}deg"><div class="pola-img">${coulMedia(c)}</div><figcaption>${esc(c.caption || '')}</figcaption></figure>`).join('')}</section>`);
+  $('#desktop').insertBefore(wrap, $('#windows'));
+  wrap.addEventListener('keydown', e => { const f = e.target.closest('.pola'); if (f && e.key === 'Enter') openCoulisses(+f.dataset.i, f.getBoundingClientRect()); });
+  wrap.addEventListener('pointerdown', e => {
+    const f = e.target.closest('.pola'); if (!f || e.button !== 0) return;
+    const sx = e.clientX, sy = e.clientY, ox = f.offsetLeft, oy = f.offsetTop; let dx = 0, dy = 0, moved = false, raf = 0;
+    f.setPointerCapture(e.pointerId); f.style.zIndex = ++polaZ;
+    const mv = ev => {
+      dx = ev.clientX - sx; dy = ev.clientY - sy;
+      if (!moved && Math.hypot(dx, dy) < 5) return;
+      moved = true; f.classList.add('dragging');
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; f.style.transform = `translate3d(${dx}px,${dy}px,0) rotate(var(--r))`; });
+    };
+    const up = () => {
+      cancelAnimationFrame(raf); f.removeEventListener('pointermove', mv); f.removeEventListener('pointerup', up); f.removeEventListener('pointercancel', up);
+      f.classList.remove('dragging'); f.style.transform = '';
+      if (moved) { f.style.left = clamp(ox + dx, -40, innerWidth - 80) + 'px'; f.style.top = clamp(oy + dy, 0, innerHeight - 140) + 'px'; f.dataset.moved = '1'; }
+      else openCoulisses(+f.dataset.i, f.getBoundingClientRect());
+    };
+    f.addEventListener('pointermove', mv); f.addEventListener('pointerup', up); f.addEventListener('pointercancel', up);
+  });
+  layoutPolas(true);
+}
+let polaZ = 1;
+function layoutPolas(force) {
+  const wrap = $('#polas'); if (!wrap) return;
+  const items = $$('.pola', wrap);
+  const wg = $('#widgets'), sticky = $('#sticky');
+  let L = wg && wg.offsetWidth ? wg.getBoundingClientRect().right + 34 : 24;
+  const iconsLeft = Math.min(...DESK.map(d => (d.el ? d.el.getBoundingClientRect().left : innerWidth)));
+  const R = iconsLeft - 24, T = MB + 40, B = innerHeight - 120;
+  if (sticky && sticky.offsetWidth && sticky.getBoundingClientRect().bottom > T + 60) L = Math.max(L, sticky.getBoundingClientRect().right + 26);
+  const W = R - L, H = B - T;
+  const w = clamp(Math.min(W / 2.4, H / 2.5), 120, 182);
+  const show = !isMobile() && W >= w * 1.05 && H >= w * 1.3;
+  wrap.classList.toggle('hidden', !show);
+  if (!show) return;
+  const cols = W >= w * 2 ? 2 : 1, maxRows = Math.max(1, Math.floor((H - w * 1.25) / (w * 0.95)) + 1);
+  wrap.style.setProperty('--pw', w.toFixed(0) + 'px');
+  items.forEach((f, i) => {
+    const visible = i < cols * maxRows; f.classList.toggle('hidden', !visible);
+    if (!visible || (f.dataset.moved && !force)) return;
+    const look = POLA_LOOK[i], col = i % cols, row = Math.floor(i / cols);
+    const rows = Math.min(maxRows, Math.ceil(items.length / cols)), offY = Math.max(0, (H - rows * w * 1.12) * 0.35);
+    const cw = W / cols, x = L + col * cw + (cw - w) * (0.35 + look[1] * 0.5), y = T + offY + row * w * 1.12 + look[2] * 40;
+    f.style.left = Math.round(x) + 'px'; f.style.top = Math.round(y) + 'px';
+    if (force) delete f.dataset.moved;
+  });
+}
 
 /* ==================================================================
    SPOTLIGHT
@@ -947,7 +972,6 @@ function unlock(then) {
   STATE.unlocked = true;
   $('#lock').classList.add('unlocked');
   const d = $('#desktop'); d.classList.remove('ready'); void d.offsetWidth; d.classList.add('ready');
-  const v = $('.wg-reel video'); if (v) v.play().catch(() => {});
   if (then) setTimeout(then, 350);
   if (!STATE.welcomed) {
     STATE.welcomed = true;
@@ -957,7 +981,6 @@ function unlock(then) {
 function lockScreen() {
   closeMenus(); toggleCC(false); closeSpotlight();
   STATE.unlocked = false; $('#lock').classList.remove('unlocked'); tickClock();
-  const v = $('.wg-reel video'); if (v) v.pause();
 }
 async function restart() {
   WM.closeAll(); lockScreen(); STATE.launched.clear();
@@ -984,7 +1007,7 @@ window.addEventListener('resize', () => {
   clearTimeout(rzT);
   rzT = setTimeout(() => {
     document.documentElement.classList.toggle('mobile', isMobile());
-    layoutDesk();
+    layoutDesk(); layoutPolas();
     const A = workArea();
     WM.list.forEach(r => {
       const el = r.el;
@@ -997,6 +1020,117 @@ window.addEventListener('resize', () => {
 });
 
 /* ==================================================================
+   ARRIVÉE — le MacBook posé sur la table
+   On entre en cliquant sur le Mac ou en scrollant : la caméra plonge
+   dans l'écran, puis la session s'ouvre toute seule.
+   ================================================================== */
+const LD = { p: 0, target: 0, raf: 0, tween: 0, done: false, idle: 0, geo: null, on: false };
+const ldEase = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+function buildLanding() {
+  const L = $('#landing'); if (!L) return;
+  LD.on = true;
+  const kb = [Array(14).fill(1), [...Array(13).fill(1), 1.5], [1.5, ...Array(13).fill(1)], [1.8, ...Array(11).fill(1), 1.8], [2.3, ...Array(10).fill(1), 2.3], [1, 1, 1, 1.25, 5.4, 1.25, 1, 1, 1, 1]];
+  $('#ldKb').innerHTML = kb.map((r, i) => `<div class="ld-row${i === 0 ? ' fn' : ''}">${r.map(w => `<i style="flex:${w}"></i>`).join('')}</div>`).join('');
+  const wp = $('#wallpaper'), cs = getComputedStyle(wp);
+  const waves = CONFIG.wallpaper ? '' : ($('svg', wp) || { outerHTML: '' }).outerHTML;
+  $('#ldScreen').innerHTML = `<div class="lds-wp" style="background-color:${cs.backgroundColor};background-image:${cs.backgroundImage}">${waves}</div>
+    <div class="lds-lock"><div class="lds-date"></div><div class="lds-time"></div><div class="lds-user"><span class="lds-av">${avatarHTML()}</span><b>${esc(CONFIG.name)}</b><small>Clique pour entrer</small></div></div><i class="lds-glare"></i>`;
+  $('#ldBrand').innerHTML = `<span class="ld-mono">${monogram()}</span><span><b>${esc(CONFIG.name)}</b><small>${esc(CONFIG.role)} · Portfolio</small></span>`;
+  ldClock(); layoutLanding();
+  window.addEventListener('resize', layoutLanding);
+  L.addEventListener('wheel', ldWheel, { passive: false });
+  let ty = 0, tp = 0;
+  L.addEventListener('touchstart', e => { ty = e.touches[0].clientY; tp = LD.target; }, { passive: true });
+  L.addEventListener('touchmove', e => {
+    if (LD.done || LD.tween) return; e.preventDefault();
+    LD.target = clamp(tp + (ty - e.touches[0].clientY) / (innerHeight * 0.75), 0, 1); ldKick();
+  }, { passive: false });
+  L.addEventListener('touchend', () => { if (LD.done || LD.tween) return; if (LD.target > 0.3) ldGo(); else { LD.target = 0; ldKick(); } });
+  $('#ldMac').addEventListener('click', () => ldGo());
+  $('#ldSkip').addEventListener('click', () => ldGo(true));
+  document.addEventListener('keydown', ldKey, true);
+}
+function ldClock() {
+  if (!LD.on) return;
+  const d = new Date();
+  const t = $('.lds-time'), dd = $('.lds-date');
+  if (t) t.textContent = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  if (dd) dd.textContent = ucfirst(d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }));
+}
+function layoutLanding() {
+  const L = $('#landing'); if (!L || LD.done) return;
+  const vw = innerWidth, vh = innerHeight, narrow = vw < 760;
+  // sur téléphone, la caméra et la feuille passent devant le Mac (cf. .ld-narrow)
+  L.classList.toggle('ld-narrow', narrow);
+  const k = narrow ? Math.min(vw / 580, vh / 1000) : Math.min(vw / 1200, vh / 780);
+  const left = vw / 2 - 600 * k, top = narrow ? vh / 2 - 440 * k : (vh - 760 * k) / 2 + 10 * k;
+  const rig = $('#ldRig');
+  rig.style.transform = `translate(${left.toFixed(1)}px,${top.toFixed(1)}px) scale(${k.toFixed(4)})`;
+  L.style.setProperty('--hz', (top + 405 * k).toFixed(1) + 'px');
+  // géométrie du zoom : l'écran du Mac doit finir par remplir la fenêtre
+  const scene = $('#ldScene'), prev = scene.style.transform;
+  scene.style.transform = 'none';
+  const r = $('#ldScreen').getBoundingClientRect();
+  scene.style.transform = prev;
+  LD.geo = { cx: r.left + r.width / 2, cy: r.top + r.height / 2, S: Math.max(vw / r.width, vh / r.height) * 1.04 };
+  ldRender(LD.p);
+}
+function ldRender(q) {
+  const g = LD.geo; if (!g) return;
+  const s = Math.pow(g.S, q), mx = g.cx + (innerWidth / 2 - g.cx) * q, my = g.cy + (innerHeight / 2 - g.cy) * q;
+  $('#ldScene').style.transform = q ? `translate3d(${(mx - s * g.cx).toFixed(2)}px,${(my - s * g.cy).toFixed(2)}px,0) scale(${s.toFixed(4)})` : '';
+  $('.ld-ui').style.opacity = Math.max(0, 1 - q * 3).toFixed(3);
+  $('#landing').classList.toggle('zooming', q > 0 && q < 1);
+}
+function ldKick() { if (!LD.raf) LD.raf = requestAnimationFrame(ldLoop); }
+function ldLoop() {
+  LD.raf = 0;
+  const d = LD.target - LD.p;
+  LD.p = Math.abs(d) < 0.001 ? LD.target : LD.p + d * 0.16;
+  ldRender(LD.p);
+  if (LD.p >= 0.998) { ldEnter(); return; }
+  if (LD.p !== LD.target) ldKick();
+}
+function ldWheel(e) {
+  e.preventDefault();
+  if (LD.done || LD.tween || e.ctrlKey) return;
+  const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
+  LD.target = clamp(LD.target + (e.deltaY * unit) / 1100, 0, 1);
+  ldKick();
+  clearTimeout(LD.idle);
+  LD.idle = setTimeout(() => { if (LD.done || LD.tween) return; if (LD.target > 0.32) ldGo(); else { LD.target = 0; ldKick(); } }, 600);
+}
+function ldKey(e) {
+  if (!LD.on || LD.done) return;
+  if (['Enter', ' ', 'ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); e.stopPropagation(); ldGo(); }
+}
+function ldGo(fast) {
+  if (LD.done || LD.tween) return;
+  clearTimeout(LD.idle); cancelAnimationFrame(LD.raf); LD.raf = 0;
+  if (reduceMotion()) { ldEnter(); return; }
+  const p0 = LD.p, t0 = performance.now(), dur = (fast ? 900 : 1500) * (1 - p0 * 0.6);
+  const step = now => {
+    const t = Math.min(1, (now - t0) / dur);
+    LD.p = p0 + (1 - p0) * ldEase(t); ldRender(LD.p);
+    if (t < 1) LD.tween = requestAnimationFrame(step); else ldEnter();
+  };
+  LD.tween = requestAnimationFrame(step);
+}
+function ldEnter() {
+  if (LD.done) return;
+  LD.done = true; LD.on = false;
+  document.removeEventListener('keydown', ldKey, true);
+  window.removeEventListener('resize', layoutLanding);
+  const L = $('#landing');
+  $('#boot').classList.add('done');
+  L.classList.add('out');
+  setTimeout(() => L.remove(), 600);
+  // ouverture de session automatique, comme si on tapait le mot de passe
+  setTimeout(() => { $('#lock').classList.add('logging'); }, 250);
+  setTimeout(() => { $('#lock').classList.remove('logging'); unlock(); }, 1150);
+}
+
+/* ==================================================================
    INITIALISATION (appelée à la fin de apps.js)
    ================================================================== */
 function init() {
@@ -1007,12 +1141,12 @@ function init() {
   $('#lockAvatar').innerHTML = avatarHTML();
   $('#lockName').textContent = CONFIG.name;
   $('.lock-go').innerHTML = G.arrowR;
-  buildMenubar(); buildDock(); buildWidgets(); buildDesk(); buildCC(); wireSpotlight();
+  buildMenubar(); buildDock(); buildWidgets(); buildDesk(); buildPolas(); buildCC(); wireSpotlight();
   tickClock(); setInterval(tickClock, 15000);
   $('#lock').addEventListener('click', () => unlock());
 
   const hash = location.hash.replace('#', '');
   const deep = { presentation: () => openPresentation(), contact: () => openContact(), projets: () => openFolder('all'), storyboards: () => openNotes('folder:storyboards') }[hash];
-  if (hash === 'bureau' || deep) { $('#boot').classList.add('done'); unlock(deep); }
-  else bootSequence();
+  if (hash === 'bureau' || deep) { const L = $('#landing'); if (L) L.remove(); $('#boot').classList.add('done'); unlock(deep); }
+  else { $('#boot').classList.add('done'); buildLanding(); }
 }
