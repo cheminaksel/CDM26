@@ -1177,4 +1177,5 @@ function init() {
   const deep = { presentation: () => openPresentation(), contact: () => openContact(), projets: () => openFolder('all'), storyboards: () => openNotes('folder:storyboards') }[hash];
   if (hash === 'bureau' || deep) { const L = $('#landing'); if (L) L.remove(); $('#boot').classList.add('done'); unlock(deep); }
   else { $('#boot').classList.add('done'); buildLanding(); }
+  window.__pfReady = true;
 }

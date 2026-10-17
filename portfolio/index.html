@@ -93,6 +93,24 @@
     <div class="noscript">Ce portfolio a besoin de JavaScript pour s'afficher.</div>
   </noscript>
 
+  <!-- Si le site ne démarre pas (fichier manquant, erreur), on l'affiche au lieu d'un écran vide -->
+  <script>
+    window.__pfErrors = [];
+    window.addEventListener('error', function (e) { window.__pfErrors.push((e.message || 'Erreur') + (e.filename ? ' (' + e.filename.split('/').pop() + ', ligne ' + e.lineno + ')' : '')); });
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.__pfReady) return;
+        var files = [['config.js', typeof CONFIG !== 'undefined'], ['logos.js', typeof toolLogo === 'function'], ['core.js', typeof buildLanding === 'function'], ['apps.js', typeof openLR === 'function']];
+        var miss = files.filter(function (f) { return !f[1]; }).map(function (f) { return f[0]; });
+        var box = document.createElement('div');
+        box.className = 'pf-fail';
+        box.innerHTML = '<b>Le portfolio n\'a pas pu démarrer.</b>' +
+          (miss.length ? '<p>Fichiers introuvables : <code>' + miss.join('</code>, <code>') + '</code>. Ils doivent être dans le même dossier que index.html (avec style.css, apps.css et le dossier assets).</p>' : '') +
+          (window.__pfErrors.length ? '<p>Erreur : ' + window.__pfErrors.slice(0, 3).join('<br>') + '</p>' : '');
+        document.body.appendChild(box);
+      }, 1200);
+    });
+  </script>
   <script defer src="config.js"></script>
   <script defer src="logos.js"></script>
   <script defer src="core.js"></script>
